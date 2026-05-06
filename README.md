@@ -39,7 +39,7 @@ int main(){
 
         window.processMessages();
 
-        update(window.getInput(),renderer);
+        update(window.getInput());
         
         window.swapBuffers();
     }
