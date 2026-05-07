@@ -1,6 +1,6 @@
 #ifdef __linux__
 #include "XlibWindow.h"
-XlibWindow::XlibWindow(const char* name, unsigned int width, unsigned int height) {
+XlibWindow::XlibWindow(const char* name, uint32_t width, uint32_t height) {
     mDisplay = XOpenDisplay(NULL);
     mScreen = DefaultScreen(mDisplay);
     Window rootWindow = XDefaultRootWindow(mDisplay);
@@ -12,9 +12,9 @@ XlibWindow::XlibWindow(const char* name, unsigned int width, unsigned int height
     renderState.width = width;
     renderState.height = height;
 
-    int bufferSize = width * height * sizeof(unsigned int);
+    int bufferSize = width * height * sizeof(uint32_t);
     if (renderState.screenBuffer)free(renderState.screenBuffer);
-    renderState.screenBuffer = (unsigned int*)malloc(bufferSize);
+    renderState.screenBuffer = (uint32_t*)malloc(bufferSize);
 
     if (renderState.depthBuffer)free(renderState.depthBuffer);
     renderState.depthBuffer = (float*)malloc(width * height * sizeof(float));

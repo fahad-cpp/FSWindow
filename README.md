@@ -21,7 +21,6 @@ target_link_libraries(MyProj FSWindow)
 include in project and use
 ```C++
 #include <FSWindow.h>
-#include <FSRenderer.h>
 
 void init(){
   //initialize your app
@@ -32,11 +31,8 @@ void update(Input& input){
 
 int main(){
     FSWindow window("MyWindow",720,720);
-    FSRenderer renderer(&window);
-
+    init();
     while(window.isOpen()){
-        renderer.clear(0x000000);
-
         window.processMessages();
 
         update(window.getInput());

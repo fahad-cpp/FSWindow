@@ -8,7 +8,7 @@ Colour::Colour() {
 	G = 0;
 	B = 0;
 }
-Colour::Colour(unsigned char R, unsigned char G, unsigned char B) {
+Colour::Colour(uint8_t R, uint8_t G, uint8_t B) {
 	this->R = R;
 	this->G = G;
 	this->B = B;
@@ -28,7 +28,7 @@ Colour Colour::operator*(const float num) {
 	if (newcol.z > 255) {
 		newcol.z = 255;
 	}
-	return { u8(newcol.x),u8(newcol.y),u8(newcol.z) };
+	return { uint8_t(newcol.x),uint8_t(newcol.y),uint8_t(newcol.z) };
 }
 Colour Colour::operator+(const Colour& col) {
 	Vector newcol = { float(this->R + col.R),float(this->G + col.G),float(this->B + col.B) };
@@ -41,24 +41,24 @@ Colour Colour::operator+(const Colour& col) {
 	if (newcol.z > 255) {
 		newcol.z = 255;
 	}
-	return { u8(newcol.x),u8(newcol.y),u8(newcol.z) };
+	return { uint8_t(newcol.x),uint8_t(newcol.y),uint8_t(newcol.z) };
 }
 float Colour::luminance() {
 	return ((0.2126f * float(R)) + (0.7152f * float(G)) + (0.0722f * float(B)));
 }
 
-u32 getHex(const Colour& RGB) {
-	return u32((RGB.R << 16) | (RGB.G << 8) | RGB.B);
+uint32_t getHex(const Colour& RGB) {
+	return uint32_t((RGB.R << 16) | (RGB.G << 8) | RGB.B);
 }
-Colour hexToRGB(u32 hex) {
+Colour hexToRGB(uint32_t hex) {
 	Colour color;
-	color.R = u8((hex >> 16) & 0xff);
-	color.G = u8((hex >> 8) & 0xff);
-	color.B = u8(hex & 0xff);
+	color.R = uint8_t((hex >> 16) & 0xff);
+	color.G = uint8_t((hex >> 8) & 0xff);
+	color.B = uint8_t(hex & 0xff);
 	return color;
 }
-u32 rgbtoHex(Colour RGB) {
-	return u32((RGB.R << 16) | (RGB.G << 8) | RGB.B);
+uint32_t rgbtoHex(Colour RGB) {
+	return uint32_t((RGB.R << 16) | (RGB.G << 8) | RGB.B);
 }
 
 

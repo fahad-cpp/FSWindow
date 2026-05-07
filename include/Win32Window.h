@@ -14,13 +14,16 @@ private:
 	inline HWND getNative() const { return mWindowHandle; }
 public:
 	BITMAPINFO bitmapInfo;
-	Win32Window(const char* name = "NULL", unsigned int width = 720, unsigned int height = 720);
+	Win32Window(const char* name = "NULL", uint32_t width = 720, uint32_t height = 720);
 	~Win32Window();
 	void swapBuffers() override;
 	void processMessages() override;
 	void addConsole() const override;
 	void removeConsole() const override;
 	bool isOpen() const override { return IsWindow(mWindowHandle); }
+	void showCursor(bool show);
+	void setWindowPos(uint32_t x,uint32_t y);
+	void setCursorPos(uint32_t x,uint32_t y);
 	void close() override;
 };
 #endif

@@ -2,28 +2,21 @@
 #define SCENE_H
 #include "Vector.h"
 #include <vector>
-#define infinity 2000000000
-typedef unsigned int u32;
-typedef unsigned char u8;
-#define internal static
-#define global_variable static
-#define PI 3.14159265359
+#include <stdint.h>
 //Colour
-typedef unsigned char u8;
-typedef unsigned int u32;
 struct Colour {
-	u8 R, G, B;
+	uint8_t R, G, B;
 	Colour();
-	Colour(unsigned char R, unsigned char G, unsigned char B);
+	Colour(uint8_t R, uint8_t G, uint8_t B);
 
 	bool operator==(const Colour& op)const;
 	Colour operator*(const float num);
 	Colour operator+(const Colour& col);
 	float luminance();
 };
-u32 getHex(const Colour&);
-Colour hexToRGB(u32 hex);
-u32 rgbtoHex(Colour RGB);
+uint32_t getHex(const Colour&);
+Colour hexToRGB(uint32_t hex);
+uint32_t rgbtoHex(Colour RGB);
 
 //Objects
 enum class Type {
@@ -84,10 +77,5 @@ struct Transform {
 		this->scale = scale;
 		this->rotation = rotation;
 	}
-};
-//Scene
-struct Scene {
-	;
-
 };
 #endif

@@ -17,7 +17,7 @@ private:
 	inline void setNative(Window window) { mWindowHandle = window; }
 	inline Window getNative() const { return mWindowHandle; }
 public:
-	XlibWindow(const char* name = "NULL", unsigned int width = 720, unsigned int height = 720);
+	XlibWindow(const char* name = "NULL", uint32_t width = 720, uint32_t height = 720);
 	~XlibWindow();
 	void swapBuffers() override;
 	void processMessages() override;

@@ -107,7 +107,7 @@ void Win32Window::processMessages() {
 		switch (message.message) {
 			case WM_KEYUP:
 			case WM_KEYDOWN: {
-				u32 vk_code = (u32)message.wParam;
+				uint32_t vk_code = (uint32_t)message.wParam;
 				bool isDown = ((message.lParam & (1 << 31)) == 0);
 #define process_messages(b,vk)\
 case vk:{\
@@ -192,6 +192,16 @@ void Win32Window::addConsole() const {
 void Win32Window::removeConsole() const {
 	FreeConsole();
 	std::fclose(stdout);
+}
+
+void Win32Window::showCursor(bool show){
+	ShowCursor(show);
+}
+void Win32Window::setWindowPos(uint32_t x,uint32_t y){
+	SetWindowPos(mWindowHandle,NULL,x,y,renderState.width,renderState.height,0);
+}
+void Win32Window::setCursorPos(uint32_t x,uint32_t y){
+	SetCursorPos(x,y);
 }
 
 void Win32Window::close() {
