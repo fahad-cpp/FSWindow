@@ -1,4 +1,4 @@
-#include "FSWindow.h"
+#include "Window.h"
 #ifdef _WIN32
 #include "Win32Window.h"
 #elif __linux__
@@ -6,7 +6,7 @@
 #endif
 
 
-FSWindow::FSWindow(const char* name, uint32_t width, uint32_t height) {
+FS::Window::Window(const char* name, uint32_t width, uint32_t height) {
 #ifdef _WIN32
 	impl = new Win32Window(name, width, height);
 #elif __linux__
@@ -15,7 +15,7 @@ FSWindow::FSWindow(const char* name, uint32_t width, uint32_t height) {
 	impl->addConsole();
 }
 
-FSWindow::~FSWindow() {
+FS::Window::~Window() {
 	impl->removeConsole();
 #ifdef _WIN32
 	delete (Win32Window*)impl;

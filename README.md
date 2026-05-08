@@ -25,12 +25,12 @@ include in project and use
 void init(){
   //initialize your app
 }
-void update(Input& input){
+void update(FS::Input& input){
   //Do something per-frame
 }
 
 int main(){
-    FSWindow window("MyWindow",720,720);
+    FS::Window window("MyWindow",720,720);
     init();
     while(window.isOpen()){
         window.processMessages();
