@@ -3,7 +3,7 @@
 #ifdef _WIN32
 #define _CRT_SECURE_NO_WARNINGS
 #include <Windows.h>
-#include "Window.h"
+#include "FSWindow.h"
 namespace FS {
 	//WIN32 window
 	class Win32Window : public BaseWindow {
