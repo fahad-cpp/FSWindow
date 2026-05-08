@@ -1,9 +1,9 @@
 #ifdef __linux__
 #include "XlibWindow.h"
-XlibWindow::XlibWindow(const char* name, uint32_t width, uint32_t height) {
+FS::XlibWindow::XlibWindow(const char* name, uint32_t width, uint32_t height) {
     mDisplay = XOpenDisplay(NULL);
     mScreen = DefaultScreen(mDisplay);
-    Window rootWindow = XDefaultRootWindow(mDisplay);
+    XWindow rootWindow = XDefaultRootWindow(mDisplay);
     mWindowHandle = XCreateSimpleWindow(mDisplay, rootWindow, 0, 0, width, height, 0, 0, 0x000000);
     XMapWindow(mDisplay, mWindowHandle);
     mGc = DefaultGC(mDisplay, mScreen);
@@ -21,6 +21,14 @@ XlibWindow::XlibWindow(const char* name, uint32_t width, uint32_t height) {
 
     XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask);
 
+    emptyPixmap = XCreatePixmap(mDisplay,mWindowHandle,1,1,0);
+    defaultCursor = XCreateFontCursor(mDisplay,XC_arrow);
+    hiddenCursor = XCreatePixmapCursor(mDisplay,
+        emptyPixmap,
+        emptyPixmap,
+        NULL,NULL,0,0
+    );
+
     mBackImage = XCreateImage(mDisplay,
         DefaultVisual(mDisplay, mScreen),
         DefaultDepth(mDisplay, mScreen),
@@ -34,14 +42,17 @@ XlibWindow::XlibWindow(const char* name, uint32_t width, uint32_t height) {
     );
     mBackImage->data = (char*)malloc(width * height * sizeof(uint32_t));
 }
-XlibWindow::~XlibWindow() {
+FS::XlibWindow::~XlibWindow() {
     XDestroyImage(mBackImage);
     if (renderState.screenBuffer)free(renderState.screenBuffer);
     if (renderState.depthBuffer)free(renderState.depthBuffer);
     if (isOpen())XDestroyWindow(mDisplay, mWindowHandle);
+    XFreeCursor(mDisplay,hiddenCursor);
+    XFreeCursor(mDisplay,defaultCursor);
+    XFreePixmap(mDisplay,emptyPixmap);
     XCloseDisplay(mDisplay);
 }
-void XlibWindow::swapBuffers() {
+void FS::XlibWindow::swapBuffers() {
     if (!isOpen())return;
     for (int y = 0;y < renderState.height;y++) {
         for (int x = 0;x < renderState.width;x++) {
@@ -52,7 +63,7 @@ void XlibWindow::swapBuffers() {
     }
     XPutImage(mDisplay, mWindowHandle, mGc, mBackImage, 0, 0, 0, 0, renderState.width, renderState.height);
 }
-void XlibWindow::processMessages() {
+void FS::XlibWindow::processMessages() {
     if (!isOpen())return;
     while (XPending(mDisplay) > 0) {
         XEvent event;
@@ -132,10 +143,42 @@ void XlibWindow::processMessages() {
         }
     }
 };
-void XlibWindow::addConsole() const {
+void FS::XlibWindow::addConsole() const {
     std::freopen("/dev/tty", "w", stdout);
 };
-void XlibWindow::removeConsole() const {
+
+void FS::XlibWindow::showCursor(bool show){
+    if(show){
+        XDefineCursor(mDisplay,mWindowHandle,defaultCursor);
+    }else{
+        XDefineCursor(mDisplay,mWindowHandle,hiddenCursor);
+    }
+}
+void FS::XlibWindow::setWindowPos(uint32_t x, uint32_t y){
+    XWindowChanges windowChanges;
+    windowChanges.x = x;
+    windowChanges.y = y;
+    XConfigureWindow(mDisplay,mWindowHandle,CWX | CWY , &windowChanges);
+}
+void FS::XlibWindow::setCursorPos(uint32_t x, uint32_t y){
+    XWarpPointer(mDisplay,None,mWindowHandle,0,0,0,0,x,y);
+    XFlush(mDisplay);
+}
+FS::Vector2 FS::XlibWindow::getWindowPos() const {
+    XWindowAttributes attr;
+    XGetWindowAttributes(mDisplay,mWindowHandle,&attr);
+    return {(float)attr.x,(float)attr.y};
+}
+FS::Vector2 FS::XlibWindow::getCursorPos() const {
+    XWindow root,child;
+    int x,y;
+    uint32_t mask;
+    XQueryPointer(mDisplay,mWindowHandle,&root,&child,&x,&y,nullptr,nullptr,&mask);
+    
+    return {(float)x,(float)y};
+}
+
+void FS::XlibWindow::removeConsole() const {
     std::fclose(stdout);
 };
 
