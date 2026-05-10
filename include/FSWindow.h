@@ -45,8 +45,8 @@ namespace FS {
 		inline void showCursor(bool show) { impl->showCursor(show); }
 		inline void setWindowPos(uint32_t x, uint32_t y) { impl->setWindowPos(x, y); }
 		inline void setCursorPos(uint32_t x, uint32_t y) { impl->setCursorPos(x, y); }
-		inline Vector2 getWindowPos() const { return impl->getWindowPos();}
-		inline Vector2 getCursorPos() const { return impl->getCursorPos();}
+		inline Vector2 getWindowPos() const { return impl->getWindowPos(); }
+		inline Vector2 getCursorPos() const { return impl->getCursorPos(); }
 		inline void close() { return impl->close(); };
 		inline RenderState* getRenderState() { return impl->getRenderState(); };
 		inline Input* getInput() { return impl->getInput(); }

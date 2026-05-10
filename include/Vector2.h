@@ -1,7 +1,7 @@
 #ifndef VECTOR2_H
 #define VECTOR2_H
 #include <math.h>
-namespace FS{
+namespace FS {
 	struct Vector2 {
 		float x;
 		float y;

@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "Input.h"
 typedef Window XWindow;
-namespace FS{
+namespace FS {
 	class XlibWindow : public BaseWindow {
 	private:
 		XWindow mWindowHandle;
@@ -19,7 +19,7 @@ namespace FS{
 		Cursor defaultCursor;
 		Cursor hiddenCursor;
 		Pixmap emptyPixmap;
-	
+
 		inline void setNative(XWindow window) { mWindowHandle = window; }
 		inline XWindow getNative() const { return mWindowHandle; }
 	public:

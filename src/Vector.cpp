@@ -1,6 +1,6 @@
 #include "Vector.h"
 #include <math.h>
-namespace FS{
+namespace FS {
 	Vector operator+(const Vector& vec1, const Vector& vec) {
 		return { (vec1.x + vec.x),(vec1.y + vec.y),(vec1.z + vec.z) };
 	}

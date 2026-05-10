@@ -1,7 +1,7 @@
 #ifdef _WIN32
 #include "Win32Window.h"
 LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
-namespace FS{
+namespace FS {
 	Win32Window::Win32Window(const char* name, unsigned int width, unsigned int height) {
 		input = {};
 		WNDCLASSA mWindowClass = {};
@@ -9,40 +9,40 @@ namespace FS{
 		mWindowClass.lpszClassName = "ClassName";
 		mWindowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		mWindowClass.style = CS_HREDRAW | CS_VREDRAW;
-	
+
 		RegisterClassA(&mWindowClass);
-	
+
 		mWindowHandle = CreateWindowA(mWindowClass.lpszClassName, name, WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, NULL, this);
-	
+
 		mDeviceContextHandle = GetDC(mWindowHandle);
-	
+
 		renderState.height = height;
 		renderState.width = width;
-	
+
 		int bufferSize = height * width * sizeof(unsigned int);
-	
+
 		if (renderState.screenBuffer)VirtualFree(renderState.screenBuffer, 0, MEM_RELEASE);
 		renderState.screenBuffer = VirtualAlloc(0, bufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	
+
 		bufferSize = height * width * sizeof(float);
 		if (renderState.depthBuffer)VirtualFree(renderState.depthBuffer, 0, MEM_RELEASE);
 		renderState.depthBuffer = (float*)VirtualAlloc(0, bufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	
+
 		bitmapInfo.bmiHeader.biSize = sizeof(bitmapInfo.bmiHeader);
 		bitmapInfo.bmiHeader.biWidth = renderState.width;
 		bitmapInfo.bmiHeader.biHeight = renderState.height;
 		bitmapInfo.bmiHeader.biBitCount = 32;
 		bitmapInfo.bmiHeader.biPlanes = 1;
 		bitmapInfo.bmiHeader.biCompression = BI_RGB;
-	
+
 	}
 	Win32Window::~Win32Window() {
 		if (isOpen())close();
 		if (renderState.screenBuffer)VirtualFree(renderState.screenBuffer, 0, MEM_RELEASE);
 		if (renderState.depthBuffer)VirtualFree(renderState.depthBuffer, 0, MEM_RELEASE);
 	}
-	
-	
+
+
 	LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
 		LRESULT result = 0;
 		Win32Window* pWindow = nullptr;
@@ -75,23 +75,23 @@ namespace FS{
 				RenderState* renderStateU = pWindow->getRenderState();
 				renderStateU->width = rect.right - rect.left;
 				renderStateU->height = rect.bottom - rect.top;
-	
+
 				int bufferSize = renderStateU->width * renderStateU->height * sizeof(unsigned int);
-	
+
 				if (renderStateU->screenBuffer)VirtualFree(renderStateU->screenBuffer, 0, MEM_RELEASE);
 				renderStateU->screenBuffer = VirtualAlloc(0, bufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	
+
 				int dBufferSize = renderStateU->width * renderStateU->height * sizeof(float);
 				if (renderStateU->depthBuffer)VirtualFree(renderStateU->depthBuffer, 0, MEM_RELEASE);
 				renderStateU->depthBuffer = (float*)VirtualAlloc(0, dBufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	
+
 				pWindow->bitmapInfo.bmiHeader.biSize = sizeof(pWindow->bitmapInfo.bmiHeader);
 				pWindow->bitmapInfo.bmiHeader.biWidth = renderStateU->width;
 				pWindow->bitmapInfo.bmiHeader.biHeight = renderStateU->height;
 				pWindow->bitmapInfo.bmiHeader.biBitCount = 32;
 				pWindow->bitmapInfo.bmiHeader.biPlanes = 1;
 				pWindow->bitmapInfo.bmiHeader.biCompression = BI_RGB;
-	
+
 				return 0;
 			}break;
 			default: {
@@ -100,7 +100,7 @@ namespace FS{
 		}
 		return DefWindowProcA(window, msg, wParam, lParam);
 	}
-	
+
 	void Win32Window::processMessages() {
 		if (!isOpen())return;
 		MSG message;
@@ -110,7 +110,7 @@ namespace FS{
 				case WM_KEYDOWN: {
 					uint32_t vk_code = (uint32_t)message.wParam;
 					bool isDown = ((message.lParam & (1 << 31)) == 0);
-	#define process_messages(b,vk)\
+#define process_messages(b,vk)\
 	case vk:{\
 	input.buttons[b].changed = (isDown != input.buttons[b].isDown);\
 	input.buttons[b].isDown = isDown;\
@@ -155,22 +155,22 @@ namespace FS{
 				case WM_LBUTTONDOWN: {
 					input.buttons[MOUSE_BUTTON_LEFT].changed = !(input.buttons[MOUSE_BUTTON_LEFT].isDown);
 					input.buttons[MOUSE_BUTTON_LEFT].isDown = true;
-	
+
 				}break;
 				case WM_LBUTTONUP: {
 					input.buttons[MOUSE_BUTTON_LEFT].changed = input.buttons[MOUSE_BUTTON_LEFT].isDown;
 					input.buttons[MOUSE_BUTTON_LEFT].isDown = false;
-	
+
 				}break;
 				case WM_RBUTTONDOWN: {
 					input.buttons[MOUSE_BUTTON_RIGHT].changed = !(input.buttons[MOUSE_BUTTON_RIGHT].isDown);
 					input.buttons[MOUSE_BUTTON_RIGHT].isDown = true;
-	
+
 				}break;
 				case WM_RBUTTONUP: {
 					input.buttons[MOUSE_BUTTON_RIGHT].changed = input.buttons[MOUSE_BUTTON_RIGHT].isDown;
 					input.buttons[MOUSE_BUTTON_RIGHT].isDown = false;
-	
+
 				}break;
 				default: {
 					TranslateMessage(&message);
@@ -179,43 +179,43 @@ namespace FS{
 			}
 		}
 	}
-	
+
 	void Win32Window::swapBuffers() {
 		if (!isOpen())return;
 		StretchDIBits(mDeviceContextHandle, 0, renderState.height - 1, renderState.width, -renderState.height, 0, 0, renderState.width, renderState.height, renderState.screenBuffer, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
 	}
-	
+
 	void Win32Window::addConsole() const {
 		AllocConsole();
 		std::freopen("CONOUT$", "w", stdout);
 	}
-	
+
 	void Win32Window::removeConsole() const {
 		FreeConsole();
 		std::fclose(stdout);
 	}
-	
-	void Win32Window::showCursor(bool show){
+
+	void Win32Window::showCursor(bool show) {
 		ShowCursor(show);
 	}
-	void Win32Window::setWindowPos(uint32_t x,uint32_t y){
-		SetWindowPos(mWindowHandle,NULL,x,y,renderState.width,renderState.height,0);
+	void Win32Window::setWindowPos(uint32_t x, uint32_t y) {
+		SetWindowPos(mWindowHandle, NULL, x, y, renderState.width, renderState.height, 0);
 	}
-	void Win32Window::setCursorPos(uint32_t x,uint32_t y){
-		SetCursorPos(x,y);
+	void Win32Window::setCursorPos(uint32_t x, uint32_t y) {
+		SetCursorPos(x, y);
 	}
-	
+
 	Vector2 Win32Window::getWindowPos() const {
 		RECT windowRect;
-		GetWindowRect(mWindowHandle,&windowRect);
-		return {(float)windowRect.left,(float)windowRect.top};
+		GetWindowRect(mWindowHandle, &windowRect);
+		return { (float)windowRect.left,(float)windowRect.top };
 	}
 	Vector2 FS::Win32Window::getCursorPos() const {
 		POINT cursorPos;
 		GetCursorPos(&cursorPos);
-		return {(float)cursorPos.x,(float)cursorPos.y};
+		return { (float)cursorPos.x,(float)cursorPos.y };
 	}
-	
+
 	void Win32Window::close() {
 		ReleaseDC(mWindowHandle, mDeviceContextHandle);
 		DestroyWindow(mWindowHandle);
