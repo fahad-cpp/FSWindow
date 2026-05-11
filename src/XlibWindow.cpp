@@ -168,9 +168,11 @@ namespace FS {
         XFlush(mDisplay);
     }
     Vector2 XlibWindow::getWindowPos() const {
-        XWindowAttributes attr;
-        XGetWindowAttributes(mDisplay, mWindowHandle, &attr);
-        return { (float)attr.x,(float)attr.y };
+        XWindow rootWindow = XRootWindow(mDisplay,mScreen);
+        XWindow child;
+        int x,y;
+        XTranslateCoordinates(mDisplay,mWindowHandle,rootWindow,0,0,&x,&y,&child);
+        return { (float)x,(float)y };
     }
     Vector2 XlibWindow::getCursorPos() const {
         XWindow root, child;
