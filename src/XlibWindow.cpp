@@ -168,6 +168,7 @@ namespace FS {
         XFlush(mDisplay);
     }
     Vector2 XlibWindow::getWindowPos() const {
+        if(!isOpen())return {-1,-1};
         XWindow rootWindow = XRootWindow(mDisplay,mScreen);
         XWindow child;
         int x,y;
@@ -175,7 +176,9 @@ namespace FS {
         return { (float)x,(float)y };
     }
     Vector2 XlibWindow::getCursorPos() const {
+        if(!isOpen())return {-1,-1};
         XWindow root, child;
+        root = XDefaultRootWindow(mDisplay);
         int x, y;
         uint32_t mask;
         XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, nullptr, nullptr, &mask);
