@@ -22,12 +22,13 @@ namespace FS {
 
         XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask);
 
-        emptyPixmap = XCreatePixmap(mDisplay, mWindowHandle, 1, 1, 0);
+        XColor dummyColor;
+        emptyPixmap = XCreatePixmap(mDisplay, mWindowHandle, 1, 1, 1);
         defaultCursor = XCreateFontCursor(mDisplay, XC_arrow);
         hiddenCursor = XCreatePixmapCursor(mDisplay,
             emptyPixmap,
             emptyPixmap,
-            NULL, NULL, 0, 0
+            &dummyColor, &dummyColor, 0, 0
         );
 
         mBackImage = XCreateImage(mDisplay,
