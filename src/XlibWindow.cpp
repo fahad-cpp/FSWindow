@@ -8,7 +8,6 @@ namespace FS {
         mWindowHandle = XCreateSimpleWindow(mDisplay, rootWindow, 0, 0, width, height, 0, 0, 0x000000);
         XMapWindow(mDisplay, mWindowHandle);
         mGc = DefaultGC(mDisplay, mScreen);
-        XFlush(mDisplay);
         input = {};
         renderState.width = width;
         renderState.height = height;
@@ -30,7 +29,7 @@ namespace FS {
             emptyPixmap,
             &dummyColor, &dummyColor, 0, 0
         );
-
+        
         mBackImage = XCreateImage(mDisplay,
             DefaultVisual(mDisplay, mScreen),
             DefaultDepth(mDisplay, mScreen),
@@ -43,6 +42,7 @@ namespace FS {
             renderState.width * 4
         );
         mBackImage->data = (char*)malloc(width * height * sizeof(uint32_t));
+        XFlush(mDisplay);
     }
     XlibWindow::~XlibWindow() {
         XDestroyImage(mBackImage);
@@ -181,17 +181,21 @@ namespace FS {
         uint8_t* data = NULL;
         int status = XGetWindowProperty(mDisplay,mWindowHandle,prop,0,4,False,XA_CARDINAL,&actualType,&actualFormart,&nitems,&bytesAfter,&data);
 
-        if((status != Success) || (!data)){ 
+        if((status != Success)){ 
             std::cerr << "failed to get window property\n";
+            std::cerr << "status:" << status << "\n";
+            return {(float)x,(float)y};
+        }
+        if(nitems != 4){
             return {(float)x,(float)y};
         }
         long* extents = (long*)data;
-
         long left = 0,top = 0;
         left = extents[0];
         top = extents[2];
         x -= left;
         y -= top;
+        XFree(data);
         return { (float)x,(float)(y)};
     }
     Vector2 XlibWindow::getCursorPos() const {
