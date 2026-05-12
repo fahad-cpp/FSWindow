@@ -198,7 +198,7 @@ namespace FS {
 	void Win32Window::showCursor(bool show) {
 		ShowCursor(show);
 	}
-	void Win32Window::setWindowPos(uint32_t x, uint32_t y) {
+	void Win32Window::setWindowPos(int x, int y) {
 		SetWindowPos(mWindowHandle, NULL, x, y, renderState.width, renderState.height, 0);
 	}
 	void Win32Window::setCursorPos(uint32_t x, uint32_t y) {

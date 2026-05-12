@@ -22,7 +22,7 @@ namespace FS {
 		virtual void removeConsole() const = 0;
 		virtual bool isOpen() const = 0;
 		virtual void showCursor(bool show) = 0;
-		virtual void setWindowPos(uint32_t x, uint32_t y) = 0;
+		virtual void setWindowPos(int x, int y) = 0;
 		virtual void setCursorPos(uint32_t x, uint32_t y) = 0;
 		virtual Vector2 getWindowPos() const = 0;
 		virtual Vector2 getCursorPos() const = 0;
@@ -43,7 +43,7 @@ namespace FS {
 		inline void removeConsole() const { impl->removeConsole(); };
 		inline bool isOpen() const { return impl->isOpen(); };
 		inline void showCursor(bool show) { impl->showCursor(show); }
-		inline void setWindowPos(uint32_t x, uint32_t y) { impl->setWindowPos(x, y); }
+		inline void setWindowPos(int x, int y) { impl->setWindowPos(x, y); }
 		inline void setCursorPos(uint32_t x, uint32_t y) { impl->setCursorPos(x, y); }
 		inline Vector2 getWindowPos() const { return impl->getWindowPos(); }
 		inline Vector2 getCursorPos() const { return impl->getCursorPos(); }

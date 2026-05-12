@@ -5,6 +5,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/cursorfont.h>
+#include <X11/Xatom.h>
 #include <stdint.h>
 #include "Input.h"
 typedef Window XWindow;
@@ -31,7 +32,7 @@ namespace FS {
 		void removeConsole() const override;
 		bool isOpen() const override { return mWindowHandle; }
 		void showCursor(bool show) override;
-		void setWindowPos(uint32_t x, uint32_t y) override;
+		void setWindowPos(int x, int y) override;
 		void setCursorPos(uint32_t x, uint32_t y) override;
 		Vector2 getWindowPos() const override;
 		Vector2 getCursorPos() const override;

@@ -157,11 +157,11 @@ namespace FS {
             XDefineCursor(mDisplay, mWindowHandle, hiddenCursor);
         }
     }
-    void XlibWindow::setWindowPos(uint32_t x, uint32_t y) {
-        XWindowChanges windowChanges;
-        windowChanges.x = x;
-        windowChanges.y = y;
-        XConfigureWindow(mDisplay, mWindowHandle, CWX | CWY, &windowChanges);
+    void XlibWindow::setWindowPos(int x, int y) {
+        if(!isOpen())return;
+        XSync(mDisplay,False);
+        XMoveWindow(mDisplay,mWindowHandle,x,y);
+        XFlush(mDisplay);
     }
     void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
         XWarpPointer(mDisplay, None, mWindowHandle, 0, 0, 0, 0, x, y);
@@ -173,7 +173,26 @@ namespace FS {
         XWindow child;
         int x,y;
         XTranslateCoordinates(mDisplay,mWindowHandle,rootWindow,0,0,&x,&y,&child);
-        return { (float)x,(float)y };
+
+        Atom prop = XInternAtom(mDisplay,"_NET_FRAME_EXTENTS",False);
+        Atom actualType;
+        int actualFormart;
+        uint64_t nitems,bytesAfter;
+        uint8_t* data = NULL;
+        int status = XGetWindowProperty(mDisplay,mWindowHandle,prop,0,4,False,XA_CARDINAL,&actualType,&actualFormart,&nitems,&bytesAfter,&data);
+
+        if((status != Success) || (!data)){ 
+            std::cerr << "failed to get window property\n";
+            return {(float)x,(float)y};
+        }
+        long* extents = (long*)data;
+
+        long left = 0,top = 0;
+        left = extents[0];
+        top = extents[2];
+        x -= left;
+        y -= top;
+        return { (float)x,(float)(y)};
     }
     Vector2 XlibWindow::getCursorPos() const {
         if(!isOpen())return {-1,-1};

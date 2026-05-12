@@ -23,7 +23,7 @@ namespace FS {
 		void removeConsole() const override;
 		bool isOpen() const override { return IsWindow(mWindowHandle); }
 		void showCursor(bool show) override;
-		void setWindowPos(uint32_t x, uint32_t y) override;
+		void setWindowPos(int x, int y) override;
 		void setCursorPos(uint32_t x, uint32_t y) override;
 		Vector2 getWindowPos() const override;
 		Vector2 getCursorPos() const override;
