@@ -2,6 +2,7 @@ bin
 int
 lib
 build
+.cache
 *.vs
 *.vscode
 *.sln

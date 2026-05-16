@@ -29,7 +29,7 @@ namespace FS {
             emptyPixmap,
             &dummyColor, &dummyColor, 0, 0
         );
-        
+
         mBackImage = XCreateImage(mDisplay,
             DefaultVisual(mDisplay, mScreen),
             DefaultDepth(mDisplay, mScreen),
@@ -181,7 +181,7 @@ namespace FS {
         uint8_t* data = NULL;
         int status = XGetWindowProperty(mDisplay,mWindowHandle,prop,0,4,False,XA_CARDINAL,&actualType,&actualFormart,&nitems,&bytesAfter,&data);
 
-        if((status != Success)){ 
+        if((status != Success)){
             std::cerr << "failed to get window property\n";
             std::cerr << "status:" << status << "\n";
             return {(float)x,(float)y};

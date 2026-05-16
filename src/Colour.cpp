@@ -1,5 +1,5 @@
 #include "Colour.h"
-//Colour 
+//Colour
 namespace FS {
 	Colour::Colour() {
 		R = 0;

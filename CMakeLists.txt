@@ -8,5 +8,5 @@ add_library(FSWindow ${SOURCES})
 target_include_directories(FSWindow PUBLIC include)
 
 if(UNIX AND NOT APPLE)
-target_link_libraries(FSWindow X11)
+  target_link_libraries(FSWindow X11)
 endif()
