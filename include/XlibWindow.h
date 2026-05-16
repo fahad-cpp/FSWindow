@@ -22,7 +22,6 @@ namespace FS {
 		Pixmap emptyPixmap;
 
 		inline void setNative(XWindow window) { mWindowHandle = window; }
-		inline XWindow getNative() const { return mWindowHandle; }
 	public:
 		XlibWindow(const char* name = "NULL", uint32_t width = 720, uint32_t height = 720);
 		~XlibWindow();
@@ -37,6 +36,7 @@ namespace FS {
 		Vector2 getWindowPos() const override;
 		Vector2 getCursorPos() const override;
 		void close() override { XDestroyWindow(mDisplay, mWindowHandle);mWindowHandle = (XWindow)NULL; }
+		inline XWindow getNative() const { return mWindowHandle; }
 	};
 }
 #endif

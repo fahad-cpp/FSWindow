@@ -1,3 +1,5 @@
+#ifndef XLIBWINDOW
+#define XLIBWINDOW
 #ifdef __linux__
 #include "XlibWindow.h"
 namespace FS {
@@ -214,4 +216,5 @@ namespace FS {
     };
 }
 
+#endif
 #endif

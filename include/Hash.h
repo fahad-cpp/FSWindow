@@ -1,8 +1,8 @@
 #ifndef HASH_H
 #define HASH_H
-
-#include <algorithm>
 #include "Colour.h"
+#include "Vector.h"
+#include <functional>
 template<typename T>
 inline void hashCombine(std::size_t& seed, const T& value);
 template<>

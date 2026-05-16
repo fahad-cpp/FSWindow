@@ -12,7 +12,6 @@ namespace FS {
 		HDC mDeviceContextHandle;
 
 		inline void setNative(HWND window) { mWindowHandle = window; }
-		inline HWND getNative() const { return mWindowHandle; }
 	public:
 		BITMAPINFO bitmapInfo;
 		Win32Window(const char* name = "NULL", uint32_t width = 720, uint32_t height = 720);
@@ -28,6 +27,7 @@ namespace FS {
 		Vector2 getWindowPos() const override;
 		Vector2 getCursorPos() const override;
 		void close() override;
+		inline HWND getNative() const { return mWindowHandle; }
 	};
 };
 #endif

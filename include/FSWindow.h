@@ -1,10 +1,14 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-#include <iostream>
-#include <string>
 #include <stdint.h>
 #include "Input.h"
 #include "Vector2.h"
+#ifdef _WIN32
+#include <windows.h>
+#elif __linux__
+#include <X11/Xlib.h>
+typedef XWindow Window;
+#endif
 namespace FS {
 	struct RenderState {
 		int width;
@@ -50,6 +54,11 @@ namespace FS {
 		inline void close() { return impl->close(); };
 		inline RenderState* getRenderState() { return impl->getRenderState(); };
 		inline Input* getInput() { return impl->getInput(); }
+		#ifdef _WIN32
+		HWND getNative();
+		#elif __linux__
+		XWindow getNative();
+		#endif
 	};
 };
 

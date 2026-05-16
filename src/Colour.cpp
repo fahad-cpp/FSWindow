@@ -1,4 +1,5 @@
 #include "Colour.h"
+#include "Vector.h"
 //Colour
 namespace FS {
 	Colour::Colour() {

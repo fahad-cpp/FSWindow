@@ -23,3 +23,13 @@ FS::Window::~Window() {
 	delete (XlibWindow*)impl;
 #endif
 }
+
+#ifdef _WIN32
+HWND FS::Window::getNative(){
+    return static_cast<Win32Window*>(impl)->getNative();
+}
+#elif __linux__
+XWindow FS::Window::getNative(){
+    return static_cast<XlibWindow*>(impl)->getNative();
+}
+#endif

@@ -1,7 +1,5 @@
 #ifndef COLOUR_H
 #define COLOUR_H
-#include "Vector.h"
-#include <vector>
 #include <stdint.h>
 //Colour
 namespace FS {

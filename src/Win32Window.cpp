@@ -1,4 +1,7 @@
+#ifndef WIN32WINDOW
+#define WIN32WINDOW
 #ifdef _WIN32
+#include <iostream>
 #include "Win32Window.h"
 LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace FS {
@@ -222,4 +225,5 @@ namespace FS {
 		mWindowHandle = (HWND)NULL;
 	}
 }
+#endif
 #endif
