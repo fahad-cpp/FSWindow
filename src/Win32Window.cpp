@@ -1,10 +1,10 @@
 #ifndef WIN32WINDOW
 #define WIN32WINDOW
 #ifdef _WIN32
-#include <iostream>
 #include "Win32Window.h"
-LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
+#include <cstdio>
 namespace FS {
+    LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
 	Win32Window::Win32Window(const char* name, unsigned int width, unsigned int height) {
 		input = {};
 		WNDCLASSA mWindowClass = {};
