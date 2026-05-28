@@ -7,7 +7,7 @@
 #include <windows.h>
 #elif __linux__
 #include <X11/Xlib.h>
-typedef XWindow Window;
+typedef Window XWindow;
 #endif
 namespace FS {
 	struct RenderState {
@@ -18,8 +18,8 @@ namespace FS {
 	};
 	class BaseWindow {
 	public:
-		RenderState renderState;
-		Input input;
+		RenderState renderState = {};
+		Input input = {};
 		virtual void swapBuffers() = 0;
 		virtual void processMessages() = 0;
 		virtual void addConsole() const = 0;

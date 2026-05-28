@@ -7,8 +7,6 @@
 #include <X11/cursorfont.h>
 #include <X11/Xatom.h>
 #include <stdint.h>
-#include "Input.h"
-typedef Window XWindow;
 namespace FS {
 	class XlibWindow : public BaseWindow {
 	private:

@@ -2,6 +2,7 @@
 #define XLIBWINDOW
 #ifdef __linux__
 #include "XlibWindow.h"
+#include <iostream>
 namespace FS {
     XlibWindow::XlibWindow(const char* name, uint32_t width, uint32_t height) {
         mDisplay = XOpenDisplay(NULL);
