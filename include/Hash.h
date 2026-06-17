@@ -3,14 +3,14 @@
 #include "Colour.h"
 #include "Vector.h"
 #include <functional>
-template<typename T>
-inline void hashCombine(std::size_t& seed, const T& value);
-template<>
+template <typename T>
+inline void hashCombine(std::size_t &seed, const T &value);
+template <>
 struct std::hash<FS::Vector> {
-	std::size_t operator()(const FS::Vector& vec) const;
+    std::size_t operator()(const FS::Vector &vec) const;
 };
-template<>
+template <>
 struct std::hash<FS::Colour> {
-	std::size_t operator()(const FS::Colour& color)const;
+    std::size_t operator()(const FS::Colour &color) const;
 };
 #endif
