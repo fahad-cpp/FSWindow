@@ -89,6 +89,30 @@ Colourf Colourf::operator+(const Colourf &op) {
     color.B = this->B + op.B;
     return color;
 }
+Colourf Colourf::operator-(const Colourf &col) {
+    Colourf color;
+    color.R = this->R - col.R;
+    color.G = this->G - col.G;
+    color.B = this->B - col.B;
+    return color;
+}
+Colourf Colourf::operator/(const float num) {
+    if (num == 0.f){
+        return {};
+    }
+    Colourf color;
+    color.R = this->R / num;
+    color.G = this->G / num;
+    color.B = this->B / num;
+    return color;
+}
+Colourf operator*(const float num, const Colourf &col) {
+    Colourf color;
+    color.R = col.R * num;
+    color.G = col.G * num;
+    color.B = col.B * num;
+    return color;
+}
 uint32_t rgbtoHex(const Colourf &colorf) {
     Colour color{ int(colorf.R * 255), int(colorf.G * 255), int(colorf.B * 255) };
     return rgbtoHex(color);

@@ -23,6 +23,9 @@ struct Colourf {
     bool operator==(const Colourf &op) const;
     Colourf operator*(const float num);
     Colourf operator+(const Colourf &col);
+    Colourf operator-(const Colourf &col);
+    Colourf operator/(const float num);
+    friend Colourf operator*(const float num,const Colourf& col);
 };
 Colourf hexToRGBf(uint32_t hex);
 uint32_t rgbtoHex(const Colourf &RGB);
