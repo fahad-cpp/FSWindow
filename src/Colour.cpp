@@ -1,5 +1,4 @@
 #include "Colour.h"
-#include "Vector.h"
 #include <algorithm>
 // Colour
 namespace FS {
@@ -8,40 +7,30 @@ Colour::Colour() {
     G = 0;
     B = 0;
 }
-Colour::Colour(int R, int G, int B) {
-    this->R = uint8_t(std::clamp(R, 0, 255));
-    this->G = uint8_t(std::clamp(G, 0, 255));
-    this->B = uint8_t(std::clamp(B, 0, 255));
+Colour::Colour(float R, float G, float B) {
+    this->R = uint8_t(std::clamp(R, 0.f, 255.f));
+    this->G = uint8_t(std::clamp(G, 0.f, 255.f));
+    this->B = uint8_t(std::clamp(B, 0.f, 255.f));
 }
 
 bool Colour::operator==(const Colour &op) const {
     return (this->R == op.R && this->G == op.G && this->B == op.B);
 }
 Colour Colour::operator*(const float num) {
-    Vector newcol = { float(this->R * num), float(this->G * num), float(this->B * num) };
-    if (newcol.x > 255) {
-        newcol.x = 255;
-    }
-    if (newcol.y > 255) {
-        newcol.y = 255;
-    }
-    if (newcol.z > 255) {
-        newcol.z = 255;
-    }
-    return { uint8_t(newcol.x), uint8_t(newcol.y), uint8_t(newcol.z) };
+    return { this->R * num, this->G * num, this->B * num };
+}
+Colour Colour::operator*(const Colour &col){
+    return { float(this->R * col.R), float(this->G * col.G), float(this->B * col.B) };
 }
 Colour Colour::operator+(const Colour &col) {
-    Vector newcol = { float(this->R + col.R), float(this->G + col.G), float(this->B + col.B) };
-    if (newcol.x > 255) {
-        newcol.x = 255;
-    }
-    if (newcol.y > 255) {
-        newcol.y = 255;
-    }
-    if (newcol.z > 255) {
-        newcol.z = 255;
-    }
-    return { uint8_t(newcol.x), uint8_t(newcol.y), uint8_t(newcol.z) };
+    return { float(this->R + col.R), float(this->G + col.G), float(this->B + col.B) };
+}
+Colour operator*(const float num, const Colour &color) {
+    return {
+        color.R * num,
+        color.G * num,
+        color.B * num
+    };
 }
 float Colour::luminance() {
     return ((0.2126f * float(R)) + (0.7152f * float(G)) + (0.0722f * float(B)));
@@ -97,7 +86,7 @@ Colourf Colourf::operator-(const Colourf &col) {
     return color;
 }
 Colourf Colourf::operator/(const float num) {
-    if (num == 0.f){
+    if (num == 0.f) {
         return {};
     }
     Colourf color;
@@ -114,7 +103,7 @@ Colourf operator*(const float num, const Colourf &col) {
     return color;
 }
 uint32_t rgbtoHex(const Colourf &colorf) {
-    Colour color{ int(colorf.R * 255), int(colorf.G * 255), int(colorf.B * 255) };
+    Colour color{ colorf.R * 255.f, colorf.G * 255.f, colorf.B * 255.f };
     return rgbtoHex(color);
 }
 Colourf hexToRGBf(uint32_t hex) {
