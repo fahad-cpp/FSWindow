@@ -28,6 +28,7 @@ struct Colourf {
     Colourf operator*(const float num);
     Colourf operator*(const Colourf& col);
     Colourf operator+(const Colourf &col);
+    Colourf operator+(const float &num);
     Colourf operator-(const Colourf &col);
     Colourf operator/(const float num);
     friend Colourf operator*(const float num, const Colourf &col);

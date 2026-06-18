@@ -91,6 +91,13 @@ Colourf Colourf::operator+(const Colourf &op) {
     color.B = this->B + op.B;
     return color;
 }
+Colourf Colourf::operator+(const float &num) {
+    Colourf color;
+    color.R = this->R + num;
+    color.G = this->G + num;
+    color.B = this->B + num;
+    return color;
+}
 Colourf Colourf::operator-(const Colourf &col) {
     Colourf color;
     color.R = this->R - col.R;
