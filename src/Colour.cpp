@@ -25,6 +25,9 @@ Colour Colour::operator*(const Colour &col){
 Colour Colour::operator+(const Colour &col) {
     return { float(this->R + col.R), float(this->G + col.G), float(this->B + col.B) };
 }
+Colour Colour::operator-(const Colour &col) {
+    return { float(this->R - col.R), float(this->G - col.G), float(this->B - col.B) };
+}
 Colour operator*(const float num, const Colour &color) {
     return {
         color.R * num,
