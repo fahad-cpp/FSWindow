@@ -26,6 +26,7 @@ struct Colourf {
     Colourf(float R, float G, float B);
     bool operator==(const Colourf &op) const;
     Colourf operator*(const float num);
+    Colourf operator*(const Colourf& col);
     Colourf operator+(const Colourf &col);
     Colourf operator-(const Colourf &col);
     Colourf operator/(const float num);

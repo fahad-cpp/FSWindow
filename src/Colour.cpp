@@ -77,6 +77,13 @@ Colourf Colourf::operator*(const float num) {
     color.B = this->B * num;
     return color;
 }
+Colourf Colourf::operator*(const Colourf& col) {
+    Colourf color;
+    color.R = this->R * col.R;
+    color.G = this->G * col.G;
+    color.B = this->B * col.B;
+    return color;
+}
 Colourf Colourf::operator+(const Colourf &op) {
     Colourf color;
     color.R = this->R + op.R;
