@@ -1,5 +1,6 @@
 #include "Colour.h"
 #include "Vector.h"
+#include <algorithm>
 // Colour
 namespace FS {
 Colour::Colour() {
@@ -7,10 +8,10 @@ Colour::Colour() {
     G = 0;
     B = 0;
 }
-Colour::Colour(uint8_t R, uint8_t G, uint8_t B) {
-    this->R = R;
-    this->G = G;
-    this->B = B;
+Colour::Colour(int R, int G, int B) {
+    this->R = uint8_t(std::clamp(R, 0, 255));
+    this->G = uint8_t(std::clamp(G, 0, 255));
+    this->B = uint8_t(std::clamp(B, 0, 255));
 }
 
 bool Colour::operator==(const Colour &op) const {
@@ -56,7 +57,45 @@ Colour hexToRGB(uint32_t hex) {
     color.B = uint8_t(hex & 0xff);
     return color;
 }
-uint32_t rgbtoHex(Colour RGB) {
+uint32_t rgbtoHex(const Colour &RGB) {
     return uint32_t((RGB.R << 16) | (RGB.G << 8) | RGB.B);
+}
+
+// Colourf
+Colourf::Colourf() {
+    R = 0.f;
+    G = 0.f;
+    B = 0.f;
+}
+Colourf::Colourf(float R, float G, float B) {
+    this->R = std::clamp(R, 0.f, 1.f);
+    this->G = std::clamp(G, 0.f, 1.f);
+    this->B = std::clamp(B, 0.f, 1.f);
+}
+bool Colourf::operator==(const Colourf &op) const {
+    return (this->R == op.R && this->G == op.G && this->B == op.B);
+}
+Colourf Colourf::operator*(const float num) {
+    Colourf color;
+    color.R = this->R * num;
+    color.G = this->G * num;
+    color.B = this->B * num;
+    return color;
+}
+Colourf Colourf::operator+(const Colourf &op) {
+    Colourf color;
+    color.R = this->R + op.R;
+    color.G = this->G + op.G;
+    color.B = this->B + op.B;
+    return color;
+}
+uint32_t rgbtoHex(const Colourf &colorf) {
+    Colour color{ int(colorf.R * 255), int(colorf.G * 255), int(colorf.B * 255) };
+    return rgbtoHex(color);
+}
+Colourf hexToRGBf(uint32_t hex) {
+    Colour color = hexToRGB(hex);
+    Colourf colorf = { color.R / 255.f, color.G / 255.f, color.B / 255.f };
+    return colorf;
 }
 } // namespace FS

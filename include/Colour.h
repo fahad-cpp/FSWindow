@@ -6,15 +6,25 @@ namespace FS {
 struct Colour {
     uint8_t R, G, B;
     Colour();
-    Colour(uint8_t R, uint8_t G, uint8_t B);
+    Colour(int R, int G, int B);
 
     bool operator==(const Colour &op) const;
     Colour operator*(const float num);
     Colour operator+(const Colour &col);
     float luminance();
 };
-uint32_t getHex(const Colour &);
 Colour hexToRGB(uint32_t hex);
-uint32_t rgbtoHex(Colour RGB);
+uint32_t rgbtoHex(const Colour &RGB);
+// Colourf
+struct Colourf {
+    float R, G, B;
+    Colourf();
+    Colourf(float R, float G, float B);
+    bool operator==(const Colourf &op) const;
+    Colourf operator*(const float num);
+    Colourf operator+(const Colourf &col);
+};
+Colourf hexToRGBf(uint32_t hex);
+uint32_t rgbtoHex(const Colourf &RGB);
 } // namespace FS
 #endif
