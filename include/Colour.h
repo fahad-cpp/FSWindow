@@ -12,6 +12,7 @@ struct Colour {
     Colour operator*(const float num);
     Colour operator*(const Colour &col);
     Colour operator+(const Colour &col);
+    Colour operator+(const float &num);
     Colour operator-(const Colour &col);
     friend Colour operator*(const float num, const Colour &color);
     float luminance();
