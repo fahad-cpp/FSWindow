@@ -32,8 +32,8 @@ class BaseWindow {
     virtual Vector2 getWindowPos() const = 0;
     virtual Vector2 getCursorPos() const = 0;
     virtual void close() = 0;
-    virtual inline RenderState *getRenderState() { return &renderState; }
-    virtual inline Input *getInput() { return &input; }
+    virtual inline RenderState& getRenderState() { return renderState; }
+    virtual inline Input& getInput() { return input; }
 };
 
 class Window {
@@ -54,8 +54,8 @@ class Window {
     inline Vector2 getWindowPos() const { return impl->getWindowPos(); }
     inline Vector2 getCursorPos() const { return impl->getCursorPos(); }
     inline void close() { return impl->close(); };
-    inline RenderState *getRenderState() { return impl->getRenderState(); };
-    inline Input *getInput() { return impl->getInput(); }
+    inline RenderState& getRenderState() { return impl->getRenderState(); };
+    inline Input& getInput() { return impl->getInput(); }
 #ifdef _WIN32
     HWND getNative();
 #elif __linux__

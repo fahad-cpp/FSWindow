@@ -16,19 +16,19 @@ Colour::Colour(float R, float G, float B) {
 bool Colour::operator==(const Colour &op) const {
     return (this->R == op.R && this->G == op.G && this->B == op.B);
 }
-Colour Colour::operator*(const float num) {
+Colour Colour::operator*(const float num) const {
     return { this->R * num, this->G * num, this->B * num };
 }
-Colour Colour::operator*(const Colour &col) {
+Colour Colour::operator*(const Colour &col) const {
     return { float(this->R * col.R), float(this->G * col.G), float(this->B * col.B) };
 }
-Colour Colour::operator+(const Colour &col) {
+Colour Colour::operator+(const Colour &col) const {
     return { float(this->R + col.R), float(this->G + col.G), float(this->B + col.B) };
 }
-Colour Colour::operator+(const float &num) {
+Colour Colour::operator+(const float &num) const {
     return { this->R + num, this->G + num, this->B + num };
 }
-Colour Colour::operator-(const Colour &col) {
+Colour Colour::operator-(const Colour &col) const {
     return { float(this->R - col.R), float(this->G - col.G), float(this->B - col.B) };
 }
 Colour operator*(const float num, const Colour &color) {
@@ -70,42 +70,42 @@ Colourf::Colourf(float R, float G, float B) {
 bool Colourf::operator==(const Colourf &op) const {
     return (this->R == op.R && this->G == op.G && this->B == op.B);
 }
-Colourf Colourf::operator*(const float num) {
+Colourf Colourf::operator*(const float num) const {
     Colourf color;
     color.R = this->R * num;
     color.G = this->G * num;
     color.B = this->B * num;
     return color;
 }
-Colourf Colourf::operator*(const Colourf& col) {
+Colourf Colourf::operator*(const Colourf &col) const {
     Colourf color;
     color.R = this->R * col.R;
     color.G = this->G * col.G;
     color.B = this->B * col.B;
     return color;
 }
-Colourf Colourf::operator+(const Colourf &op) {
+Colourf Colourf::operator+(const Colourf &op) const {
     Colourf color;
     color.R = this->R + op.R;
     color.G = this->G + op.G;
     color.B = this->B + op.B;
     return color;
 }
-Colourf Colourf::operator+(const float &num) {
+Colourf Colourf::operator+(const float &num) const {
     Colourf color;
     color.R = this->R + num;
     color.G = this->G + num;
     color.B = this->B + num;
     return color;
 }
-Colourf Colourf::operator-(const Colourf &col) {
+Colourf Colourf::operator-(const Colourf &col) const {
     Colourf color;
     color.R = this->R - col.R;
     color.G = this->G - col.G;
     color.B = this->B - col.B;
     return color;
 }
-Colourf Colourf::operator/(const float num) {
+Colourf Colourf::operator/(const float num) const {
     if (num == 0.f) {
         return {};
     }

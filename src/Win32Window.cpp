@@ -63,14 +63,14 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
     } break;
     case WM_CLOSE:
     case WM_DESTROY: {
-        RenderState *renderStateU = pWindow->getRenderState();
-        if (renderStateU->screenBuffer) {
-            VirtualFree(renderStateU->screenBuffer, 0, MEM_RELEASE);
-            renderStateU->screenBuffer = nullptr;
+        RenderState& renderStateU = pWindow->getRenderState();
+        if (renderStateU.screenBuffer) {
+            VirtualFree(renderStateU.screenBuffer, 0, MEM_RELEASE);
+            renderStateU.screenBuffer = nullptr;
         }
-        if (renderStateU->depthBuffer) {
-            VirtualFree(renderStateU->depthBuffer, 0, MEM_RELEASE);
-            renderStateU->depthBuffer = nullptr;
+        if (renderStateU.depthBuffer) {
+            VirtualFree(renderStateU.depthBuffer, 0, MEM_RELEASE);
+            renderStateU.depthBuffer = nullptr;
         }
         DestroyWindow(window);
         return result;
@@ -78,24 +78,24 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
     case WM_SIZE: {
         RECT rect;
         GetClientRect(window, &rect);
-        RenderState *renderStateU = pWindow->getRenderState();
-        renderStateU->width = rect.right - rect.left;
-        renderStateU->height = rect.bottom - rect.top;
+        RenderState& renderStateU = pWindow->getRenderState();
+        renderStateU.width = rect.right - rect.left;
+        renderStateU.height = rect.bottom - rect.top;
 
-        int bufferSize = renderStateU->width * renderStateU->height * sizeof(unsigned int);
+        int bufferSize = renderStateU.width * renderStateU.height * sizeof(unsigned int);
 
-        if (renderStateU->screenBuffer)
-            VirtualFree(renderStateU->screenBuffer, 0, MEM_RELEASE);
-        renderStateU->screenBuffer = VirtualAlloc(0, bufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+        if (renderStateU.screenBuffer)
+            VirtualFree(renderStateU.screenBuffer, 0, MEM_RELEASE);
+        renderStateU.screenBuffer = VirtualAlloc(0, bufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-        int dBufferSize = renderStateU->width * renderStateU->height * sizeof(float);
-        if (renderStateU->depthBuffer)
-            VirtualFree(renderStateU->depthBuffer, 0, MEM_RELEASE);
-        renderStateU->depthBuffer = (float *)VirtualAlloc(0, dBufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+        int dBufferSize = renderStateU.width * renderStateU.height * sizeof(float);
+        if (renderStateU.depthBuffer)
+            VirtualFree(renderStateU.depthBuffer, 0, MEM_RELEASE);
+        renderStateU.depthBuffer = (float *)VirtualAlloc(0, dBufferSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
         pWindow->bitmapInfo.bmiHeader.biSize = sizeof(pWindow->bitmapInfo.bmiHeader);
-        pWindow->bitmapInfo.bmiHeader.biWidth = renderStateU->width;
-        pWindow->bitmapInfo.bmiHeader.biHeight = renderStateU->height;
+        pWindow->bitmapInfo.bmiHeader.biWidth = renderStateU.width;
+        pWindow->bitmapInfo.bmiHeader.biHeight = renderStateU.height;
         pWindow->bitmapInfo.bmiHeader.biBitCount = 32;
         pWindow->bitmapInfo.bmiHeader.biPlanes = 1;
         pWindow->bitmapInfo.bmiHeader.biCompression = BI_RGB;

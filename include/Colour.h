@@ -9,11 +9,11 @@ struct Colour {
     Colour(float R, float G, float B);
 
     bool operator==(const Colour &op) const;
-    Colour operator*(const float num);
-    Colour operator*(const Colour &col);
-    Colour operator+(const Colour &col);
-    Colour operator+(const float &num);
-    Colour operator-(const Colour &col);
+    Colour operator*(const float num) const;
+    Colour operator*(const Colour &col) const;
+    Colour operator+(const Colour &col) const;
+    Colour operator+(const float &num) const;
+    Colour operator-(const Colour &col) const;
     friend Colour operator*(const float num, const Colour &color);
     float luminance();
 };
@@ -25,12 +25,12 @@ struct Colourf {
     Colourf();
     Colourf(float R, float G, float B);
     bool operator==(const Colourf &op) const;
-    Colourf operator*(const float num);
-    Colourf operator*(const Colourf& col);
-    Colourf operator+(const Colourf &col);
-    Colourf operator+(const float &num);
-    Colourf operator-(const Colourf &col);
-    Colourf operator/(const float num);
+    Colourf operator*(const float num) const;
+    Colourf operator*(const Colourf &col) const;
+    Colourf operator+(const Colourf &col) const;
+    Colourf operator+(const float &num) const;
+    Colourf operator-(const Colourf &col) const;
+    Colourf operator/(const float num) const;
     friend Colourf operator*(const float num, const Colourf &col);
 };
 Colourf hexToRGBf(uint32_t hex);
