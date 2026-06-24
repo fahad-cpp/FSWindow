@@ -73,6 +73,9 @@ void XlibWindow::swapBuffers() {
     XPutImage(mDisplay, mWindowHandle, mGc, mBackImage, 0, 0, 0, 0, renderState.width, renderState.height);
 }
 void XlibWindow::processMessages() {
+    for (int i = 0; i < BUTTON_COUNT; i++) {
+        input.buttons[i].changed = false;
+    }
     if (!isOpen())
         return;
     while (XPending(mDisplay) > 0) {

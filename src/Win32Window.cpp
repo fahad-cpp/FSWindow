@@ -1,5 +1,6 @@
 #ifndef WIN32WINDOW
 #define WIN32WINDOW
+#include "Input.h"
 #ifdef _WIN32
 #include "Win32Window.h"
 #include <cstdio>
@@ -63,7 +64,7 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
     } break;
     case WM_CLOSE:
     case WM_DESTROY: {
-        RenderState& renderStateU = pWindow->getRenderState();
+        RenderState &renderStateU = pWindow->getRenderState();
         if (renderStateU.screenBuffer) {
             VirtualFree(renderStateU.screenBuffer, 0, MEM_RELEASE);
             renderStateU.screenBuffer = nullptr;
@@ -78,7 +79,7 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
     case WM_SIZE: {
         RECT rect;
         GetClientRect(window, &rect);
-        RenderState& renderStateU = pWindow->getRenderState();
+        RenderState &renderStateU = pWindow->getRenderState();
         renderStateU.width = rect.right - rect.left;
         renderStateU.height = rect.bottom - rect.top;
 
@@ -110,6 +111,9 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 void Win32Window::processMessages() {
+    for (int i = 0; i < BUTTON_COUNT; i++) {
+        input.buttons[i].changed = false;
+    }
     if (!isOpen())
         return;
     MSG message;
