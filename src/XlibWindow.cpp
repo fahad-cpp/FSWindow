@@ -227,9 +227,9 @@ void XlibWindow::removeConsole() const {
 };
 
 bool XlibWindow::isFocused() const {
-    Window focusedWindow;
+    XWindow focusedWindow;
     int revertTo;
-    XGetInputFocus(display,&focused,&revertTo);
+    XGetInputFocus(mDisplay,&focusedWindow,&revertTo);
     return (focusedWindow == mWindowHandle);
 }
 } // namespace FS
