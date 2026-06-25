@@ -216,8 +216,9 @@ Vector2 XlibWindow::getCursorPos() const {
     XWindow root, child;
     root = XDefaultRootWindow(mDisplay);
     int x, y;
+    int wx,wy;
     uint32_t mask;
-    XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, nullptr, nullptr, &mask);
+    XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
     return { (float)x, (float)y };
 }
