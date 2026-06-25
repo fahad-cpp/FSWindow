@@ -30,6 +30,7 @@ class XlibWindow : public BaseWindow {
     void addConsole() const override;
     void removeConsole() const override;
     bool isOpen() const override { return mWindowHandle; }
+    bool isFocused() const override;
     void showCursor(bool show) override;
     void setWindowPos(int x, int y) override;
     void setCursorPos(uint32_t x, uint32_t y) override;

@@ -225,6 +225,13 @@ Vector2 XlibWindow::getCursorPos() const {
 void XlibWindow::removeConsole() const {
     std::fclose(stdout);
 };
+
+bool XlibWindow::isFocused() const {
+    Window focusedWindow;
+    int revertTo;
+    XGetInputFocus(display,&focused,&revertTo);
+    return (focusedWindow == mWindowHandle);
+}
 } // namespace FS
 
 #endif
