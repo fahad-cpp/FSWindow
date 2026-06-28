@@ -1,6 +1,7 @@
 #ifndef WIN32WINDOW
 #define WIN32WINDOW
 #include "Input.h"
+#include <windows.h>
 #ifdef _WIN32
 #include "Win32Window.h"
 #include <cstdio>
@@ -222,7 +223,9 @@ void Win32Window::setWindowPos(int x, int y) {
 void Win32Window::setCursorPos(uint32_t x, uint32_t y) {
     SetCursorPos(x, y);
 }
-
+void Win32Window::focus() const {
+    SetFocus(mWindowHandle);
+}
 Vector2 Win32Window::getWindowPos() const {
     RECT windowRect;
     GetWindowRect(mWindowHandle, &windowRect);

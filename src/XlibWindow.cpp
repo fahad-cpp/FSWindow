@@ -178,6 +178,13 @@ void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
     XWarpPointer(mDisplay, None, mWindowHandle, 0, 0, 0, 0, x, y);
     XFlush(mDisplay);
 }
+
+void XlibWindow::focus() const {
+    int revertTo;
+    XSetInputFocus(mDisplay,&mWindowHandle,&revertTo);
+    return (focusedWindow == mWindowHandle);
+}
+
 Vector2 XlibWindow::getWindowPos() const {
     if (!isOpen())
         return { -1, -1 };
