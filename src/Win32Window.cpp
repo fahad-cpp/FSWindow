@@ -1,8 +1,8 @@
 #ifndef WIN32WINDOW
 #define WIN32WINDOW
-#include "Input.h"
-#include <windows.h>
 #ifdef _WIN32
+#include <windows.h>
+#include "Input.h"
 #include "Win32Window.h"
 #include <cstdio>
 namespace FS {

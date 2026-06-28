@@ -1,5 +1,6 @@
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
+#include <X11/X.h>
 #ifdef __linux__
 #include "XlibWindow.h"
 #include <iostream>
@@ -181,8 +182,7 @@ void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
 
 void XlibWindow::focus() const {
     int revertTo;
-    XSetInputFocus(mDisplay,&mWindowHandle,&revertTo);
-    return (focusedWindow == mWindowHandle);
+    XSetInputFocus(mDisplay,mWindowHandle,revertTo,CurrentTime);
 }
 
 Vector2 XlibWindow::getWindowPos() const {
