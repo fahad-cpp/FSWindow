@@ -211,7 +211,7 @@ void Win32Window::removeConsole() const {
 }
 
 bool Win32Window::isFocused() const {
-    return (GetFocus() == mWindowHandle);
+    return (GetActiveWindow() == mWindowHandle);
 }
 
 void Win32Window::showCursor(bool show) {
