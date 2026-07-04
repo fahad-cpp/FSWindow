@@ -211,7 +211,7 @@ void Win32Window::removeConsole() const {
 }
 
 bool Win32Window::isFocused() const {
-    return (GetActiveWindow() == mWindowHandle);
+    return (GetForegroundWindow() == mWindowHandle);
 }
 
 void Win32Window::showCursor(bool show) {
@@ -224,7 +224,10 @@ void Win32Window::setCursorPos(uint32_t x, uint32_t y) {
     SetCursorPos(x, y);
 }
 void Win32Window::focus() const {
-    SetActiveWindow(mWindowHandle);
+    ShowWindow(mWindowHandle, SW_SHOW);
+    UpdateWindow(mWindowHandle);
+    SetForegroundWindow(mWindowHandle);
+    SetFocus(mWindowHandle);
 }
 Vector2 Win32Window::getWindowPos() const {
     RECT windowRect;
