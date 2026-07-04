@@ -224,7 +224,7 @@ void Win32Window::setCursorPos(uint32_t x, uint32_t y) {
     SetCursorPos(x, y);
 }
 void Win32Window::focus() const {
-    SetFocus(mWindowHandle);
+    SetActiveWindow(mWindowHandle);
 }
 Vector2 Win32Window::getWindowPos() const {
     RECT windowRect;
