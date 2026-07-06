@@ -79,7 +79,7 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
     } break;
     case WM_SIZE: {
         RECT rect;
-        GetClientRect(window, &rect);
+        GetWindowRect(window, &rect);
         RenderState &renderStateU = pWindow->getRenderState();
         renderStateU.width = rect.right - rect.left;
         renderStateU.height = rect.bottom - rect.top;
