@@ -1,6 +1,7 @@
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
 #include <X11/X.h>
+#include <X11/Xlib.h>
 #ifdef __linux__
 #include "XlibWindow.h"
 #include <iostream>
@@ -176,7 +177,8 @@ void XlibWindow::setWindowPos(int x, int y) {
     XFlush(mDisplay);
 }
 void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
-    XWarpPointer(mDisplay, None, mWindowHandle, 0, 0, 0, 0, x, y);
+    XWindow rootWindow = XDefaultRootWindow(mDisplay);
+    XWarpPointer(mDisplay, None, rootWindow, 0, 0, 0, 0, x, y);
     XFlush(mDisplay);
 }
 
@@ -226,7 +228,7 @@ Vector2 XlibWindow::getCursorPos() const {
     uint32_t mask;
     XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
-    return { (float)wx, (float)wy };
+    return { (float)x, (float)y };
 }
 
 void XlibWindow::removeConsole() const {
