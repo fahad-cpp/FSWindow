@@ -226,7 +226,7 @@ Vector2 XlibWindow::getCursorPos() const {
     uint32_t mask;
     XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
-    return { (float)x, (float)y };
+    return { (float)wx, (float)wy };
 }
 
 void XlibWindow::removeConsole() const {
