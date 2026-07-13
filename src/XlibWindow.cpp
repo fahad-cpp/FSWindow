@@ -1,7 +1,5 @@
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
-#include <X11/X.h>
-#include <X11/Xlib.h>
 #ifdef __linux__
 #include "XlibWindow.h"
 #include <iostream>
