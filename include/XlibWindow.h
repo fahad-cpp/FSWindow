@@ -11,7 +11,7 @@
 
 namespace FS {
 class XlibWindow : public BaseWindow {
-  private:
+    private:
     XWindow mWindowHandle;
     Display *mDisplay;
     int mScreen;
@@ -23,8 +23,9 @@ class XlibWindow : public BaseWindow {
 
     inline void setNative(XWindow window) { mWindowHandle = window; }
 
-  public:
-    XlibWindow(const char *name = "NULL", uint32_t width = 720, uint32_t height = 720);
+    public:
+    XlibWindow(const char *name = "NULL", uint32_t width = 720,
+               uint32_t height = 720);
     ~XlibWindow();
     void swapBuffers() override;
     void processMessages() override;
@@ -39,8 +40,10 @@ class XlibWindow : public BaseWindow {
     Vector2 getWindowPos() const override;
     Vector2 getCursorPos() const override;
     void close() override {
-        XDestroyWindow(mDisplay, mWindowHandle);
-        mWindowHandle = (XWindow)NULL;
+        if (isOpen()) {
+            XDestroyWindow(mDisplay, mWindowHandle);
+            mWindowHandle = (XWindow) nullptr;
+        }
     }
     inline XWindow getNative() const { return mWindowHandle; }
 };

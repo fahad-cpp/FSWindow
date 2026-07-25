@@ -1,6 +1,6 @@
+#ifdef _WIN32
 #ifndef WIN32WINDOW
 #define WIN32WINDOW
-#ifdef _WIN32
 #include <windows.h>
 #include "Input.h"
 #include "Win32Window.h"

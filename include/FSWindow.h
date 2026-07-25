@@ -1,6 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
+#include "Colour.h"
 #include "Input.h"
+#include "Vector.h"
 #include "Vector2.h"
 #include <stdint.h>
 
@@ -54,7 +56,7 @@ class Window {
     inline void showCursor(bool show) { impl->showCursor(show); }
     inline void setWindowPos(int x, int y) { impl->setWindowPos(x, y); }
     inline void setCursorPos(uint32_t x, uint32_t y) { impl->setCursorPos(x, y); }
-    inline void focus(){ impl->focus(); }
+    inline void focus() { impl->focus(); }
     inline Vector2 getWindowPos() const { return impl->getWindowPos(); }
     inline Vector2 getCursorPos() const { return impl->getCursorPos(); }
     inline void close() { return impl->close(); };

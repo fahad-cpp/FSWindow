@@ -1,6 +1,8 @@
+#include <X11/X.h>
+#include <X11/Xutil.h>
+#ifdef __linux__
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
-#ifdef __linux__
 #include "XlibWindow.h"
 #include <iostream>
 namespace FS {
@@ -24,7 +26,7 @@ XlibWindow::XlibWindow(const char *name, uint32_t width, uint32_t height) {
         free(renderState.depthBuffer);
     renderState.depthBuffer = (float *)malloc(width * height * sizeof(float));
 
-    XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask);
+    XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask | StructureNotifyMask);
 
     XColor dummyColor;
     emptyPixmap = XCreatePixmap(mDisplay, mWindowHandle, 1, 1, 1);
@@ -153,6 +155,33 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_CTRL, XK_Control_R);
                 process_message(BUTTON_SPACE, XK_space);
             }
+        } else if (event.type == ConfigureNotify) {
+            XConfigureEvent *configureEvent = &event.xconfigure;
+            renderState.width = configureEvent->width;
+            renderState.height = configureEvent->height;
+
+            int resolution = renderState.width * renderState.height;
+            if (renderState.screenBuffer)
+                free(renderState.screenBuffer);
+            renderState.screenBuffer = (uint32_t *)malloc(resolution * sizeof(uint32_t));
+
+            if (renderState.depthBuffer)
+                free(renderState.depthBuffer);
+            renderState.depthBuffer = (float *)malloc(resolution * sizeof(float));
+
+            XDestroyImage(mBackImage);
+            mBackImage = XCreateImage(mDisplay,
+                                      DefaultVisual(mDisplay, mScreen),
+                                      DefaultDepth(mDisplay, mScreen),
+                                      ZPixmap,
+                                      0,
+                                      NULL,
+                                      renderState.width,
+                                      renderState.height,
+                                      32,
+                                      renderState.width * 4);
+            mBackImage->data = (char *)malloc(resolution * sizeof(uint32_t));
+            XFlush(mDisplay);
         }
     }
 };
@@ -181,7 +210,7 @@ void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
 }
 
 void XlibWindow::focus() const {
-    XSetInputFocus(mDisplay,mWindowHandle,RevertToNone,CurrentTime);
+    XSetInputFocus(mDisplay, mWindowHandle, RevertToNone, CurrentTime);
 }
 
 Vector2 XlibWindow::getWindowPos() const {
@@ -222,7 +251,7 @@ Vector2 XlibWindow::getCursorPos() const {
     XWindow root, child;
     root = XDefaultRootWindow(mDisplay);
     int x, y;
-    int wx,wy;
+    int wx, wy;
     uint32_t mask;
     XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
@@ -236,7 +265,7 @@ void XlibWindow::removeConsole() const {
 bool XlibWindow::isFocused() const {
     XWindow focusedWindow;
     int revertTo;
-    XGetInputFocus(mDisplay,&focusedWindow,&revertTo);
+    XGetInputFocus(mDisplay, &focusedWindow, &revertTo);
     return (focusedWindow == mWindowHandle);
 }
 } // namespace FS
