@@ -1,5 +1,5 @@
-#ifndef COLOUR_H
-#define COLOUR_H
+#ifndef FSCOLOUR_H
+#define FSCOLOUR_H
 #include <stdint.h>
 // Colour
 namespace FS {

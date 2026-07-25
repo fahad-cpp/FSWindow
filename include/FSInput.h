@@ -1,5 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef FSINPUT_H
+#define FSINPUT_H
 namespace FS {
 enum Buttons {
     BUTTON_SHIFT,

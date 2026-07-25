@@ -1,5 +1,5 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef FSVECTOR_H
+#define FSVECTOR_H
 namespace FS {
 struct Vector {
     float x;

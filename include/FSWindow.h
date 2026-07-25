@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef FSWINDOW_H
+#define FSWINDOW_H
 #include "FSColour.h"
 #include "FSInput.h"
 #include "FSVector.h"

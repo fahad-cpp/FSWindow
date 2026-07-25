@@ -1,5 +1,5 @@
-#ifndef VECTOR2_H
-#define VECTOR2_H
+#ifndef FSVECTOR2_H
+#define FSVECTOR2_H
 #include <math.h>
 namespace FS {
 struct Vector2 {
