@@ -1,5 +1,3 @@
-#include <X11/X.h>
-#include <X11/Xutil.h>
 #ifdef __linux__
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
@@ -26,7 +24,7 @@ XlibWindow::XlibWindow(const char *name, uint32_t width, uint32_t height) {
         free(renderState.depthBuffer);
     renderState.depthBuffer = (float *)malloc(width * height * sizeof(float));
 
-    XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask | StructureNotifyMask);
+    XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask);
 
     XColor dummyColor;
     emptyPixmap = XCreatePixmap(mDisplay, mWindowHandle, 1, 1, 1);
@@ -78,6 +76,11 @@ void XlibWindow::processMessages() {
     for (int i = 0; i < BUTTON_COUNT; i++) {
         input.buttons[i].changed = false;
     }
+#define process_message(b, kc)                                          \
+    case kc: {                                                          \
+        input.buttons[b].changed = (isDown != input.buttons[b].isDown); \
+        input.buttons[b].isDown = isDown;                               \
+    } break
     if (!isOpen())
         return;
     while (XPending(mDisplay) > 0) {
@@ -87,11 +90,6 @@ void XlibWindow::processMessages() {
             bool isDown = (event.type == KeyPress);
             KeySym keyCode = XLookupKeysym(&event.xkey, 0);
             switch (keyCode) {
-#define process_message(b, kc)                                          \
-    case kc: {                                                          \
-        input.buttons[b].changed = (isDown != input.buttons[b].isDown); \
-        input.buttons[b].isDown = isDown;                               \
-    } break
                 process_message(BUTTON_A, XK_a);
                 process_message(BUTTON_A, XK_A);
                 process_message(BUTTON_B, XK_b);
@@ -155,6 +153,12 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_CTRL, XK_Control_R);
                 process_message(BUTTON_SPACE, XK_space);
             }
+        } else if (event.type == ButtonPress || event.type == ButtonRelease) {
+            bool isDown = event.type == ButtonPress;
+            switch (event.xbutton.button) {
+                process_message(MOUSE_BUTTON_LEFT, Button1);
+                process_message(MOUSE_BUTTON_RIGHT, Button3);
+            }
         } else if (event.type == ConfigureNotify) {
             XConfigureEvent *configureEvent = &event.xconfigure;
             renderState.width = configureEvent->width;
@@ -215,7 +219,7 @@ void XlibWindow::focus() const {
 
 Vector2 XlibWindow::getWindowPos() const {
     if (!isOpen())
-        return { -1, -1 };
+        return {-1, -1};
     XWindow rootWindow = XRootWindow(mDisplay, mScreen);
     XWindow child;
     int x, y;
@@ -231,10 +235,10 @@ Vector2 XlibWindow::getWindowPos() const {
     if ((status != Success)) {
         std::cerr << "failed to get window property\n";
         std::cerr << "status:" << status << "\n";
-        return { (float)x, (float)y };
+        return {(float)x, (float)y};
     }
     if (nitems != 4) {
-        return { (float)x, (float)y };
+        return {(float)x, (float)y};
     }
     long *extents = (long *)data;
     long left = 0, top = 0;
@@ -243,11 +247,11 @@ Vector2 XlibWindow::getWindowPos() const {
     x -= left;
     y -= top;
     XFree(data);
-    return { (float)x, (float)(y) };
+    return {(float)x, (float)(y)};
 }
 Vector2 XlibWindow::getCursorPos() const {
     if (!isOpen())
-        return { -1, -1 };
+        return {-1, -1};
     XWindow root, child;
     root = XDefaultRootWindow(mDisplay);
     int x, y;
@@ -255,7 +259,7 @@ Vector2 XlibWindow::getCursorPos() const {
     uint32_t mask;
     XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
-    return { (float)x, (float)y };
+    return {(float)x, (float)y};
 }
 
 void XlibWindow::removeConsole() const {

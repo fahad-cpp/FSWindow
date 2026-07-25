@@ -20,7 +20,7 @@ struct RenderState {
     float *depthBuffer;
 };
 class BaseWindow {
-  public:
+    public:
     RenderState renderState = {};
     Input input = {};
     virtual void swapBuffers() = 0;
@@ -41,10 +41,10 @@ class BaseWindow {
 };
 
 class Window {
-  private:
+    private:
     BaseWindow *impl;
 
-  public:
+    public:
     Window(const char *name = "NULL", uint32_t width = 720, uint32_t height = 720);
     ~Window();
     inline void swapBuffers() { impl->swapBuffers(); }

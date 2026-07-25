@@ -1,6 +1,6 @@
+#ifdef __linux__
 #ifndef FSLINUX
 #define FSLINUX
-#ifdef __linux__
 #include "FSWindow.h"
 #include <X11/X.h>
 #include <X11/Xatom.h>
