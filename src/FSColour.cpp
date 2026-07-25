@@ -1,4 +1,4 @@
-#include "Colour.h"
+#include "FSColour.h"
 #include <algorithm>
 // Colour
 namespace FS {

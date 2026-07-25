@@ -2,7 +2,7 @@
 #ifndef WIN32WINDOW
 #define WIN32WINDOW
 #include <windows.h>
-#include "Input.h"
+#include "FSInput.h"
 #include "Win32Window.h"
 #include <cstdio>
 namespace FS {

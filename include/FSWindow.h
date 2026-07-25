@@ -1,9 +1,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-#include "Colour.h"
-#include "Input.h"
-#include "Vector.h"
-#include "Vector2.h"
+#include "FSColour.h"
+#include "FSInput.h"
+#include "FSVector.h"
+#include "FSVector2.h"
 #include <stdint.h>
 
 #ifdef _WIN32
