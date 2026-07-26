@@ -2,6 +2,7 @@
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
 #include "XlibWindow.h"
+#include <cstring>
 #include <iostream>
 namespace FS {
 XlibWindow::XlibWindow(const char *name, uint32_t width, uint32_t height) {
@@ -63,13 +64,7 @@ XlibWindow::~XlibWindow() {
 void XlibWindow::swapBuffers() {
     if (!isOpen())
         return;
-    for (int y = 0; y < renderState.height; y++) {
-        for (int x = 0; x < renderState.width; x++) {
-            uint32_t index = ((renderState.width * y) + x);
-            uint32_t pixel = (((uint32_t *)renderState.screenBuffer)[index]);
-            XPutPixel(mBackImage, x, y, pixel);
-        }
-    }
+    std::memcpy(mBackImage->data, renderState.screenBuffer, mBackImage->bytes_per_line * mBackImage->height);
     XPutImage(mDisplay, mWindowHandle, mGc, mBackImage, 0, 0, 0, 0, renderState.width, renderState.height);
 }
 void XlibWindow::processMessages() {
