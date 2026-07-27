@@ -7,7 +7,7 @@ Colour::Colour() {
     G = 0;
     B = 0;
 }
-Colour::Colour(float R, float G, float B) {
+Colour::Colour(const float R,const float G,const float B) {
     this->R = uint8_t(std::clamp(R, 0.f, 255.f));
     this->G = uint8_t(std::clamp(G, 0.f, 255.f));
     this->B = uint8_t(std::clamp(B, 0.f, 255.f));
@@ -123,10 +123,12 @@ Colourf operator*(const float num, const Colourf col) {
     return color;
 }
 uint32_t rgbtoHex(const Colourf colorf) {
-    Colour color{ colorf.R * 255.f, colorf.G * 255.f, colorf.B * 255.f };
-    return rgbtoHex(color);
+    uint8_t R = std::clamp(colorf.R,0.f,1.f) * 255;
+    uint8_t G = std::clamp(colorf.G,0.f,1.f) * 255;
+    uint8_t B = std::clamp(colorf.B,0.f,1.f) * 255;
+    return uint32_t((R << 16) | (G << 8) | B);
 }
-Colourf hexToRGBf(uint32_t hex) {
+Colourf hexToRGBf(const uint32_t hex) {
     Colour color = hexToRGB(hex);
     Colourf colorf = { color.R / 255.f, color.G / 255.f, color.B / 255.f };
     return colorf;
