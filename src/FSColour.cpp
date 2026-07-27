@@ -123,9 +123,9 @@ Colourf operator*(const float num, const Colourf col) {
     return color;
 }
 uint32_t rgbtoHex(const Colourf colorf) {
-    uint8_t R = std::clamp(colorf.R,0.f,1.f) * 255;
-    uint8_t G = std::clamp(colorf.G,0.f,1.f) * 255;
-    uint8_t B = std::clamp(colorf.B,0.f,1.f) * 255;
+    uint32_t R = static_cast<uint8_t>(std::clamp(colorf.R,0.f,1.f) * 255.f);
+    uint32_t G = static_cast<uint8_t>(std::clamp(colorf.G,0.f,1.f) * 255.f);
+    uint32_t B = static_cast<uint8_t>(std::clamp(colorf.B,0.f,1.f) * 255.f);
     return uint32_t((R << 16) | (G << 8) | B);
 }
 Colourf hexToRGBf(const uint32_t hex) {
