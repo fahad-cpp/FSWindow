@@ -23,6 +23,7 @@ class BaseWindow {
     public:
     RenderState renderState = {};
     Input input = {};
+    virtual ~BaseWindow();
     virtual void swapBuffers() = 0;
     virtual void processMessages() = 0;
     virtual void addConsole() const = 0;

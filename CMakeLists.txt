@@ -6,7 +6,7 @@ file(GLOB SOURCES src/*.cpp)
 
 add_library(FSWindow ${SOURCES})
 
-target_compile_options(FSWindow PRIVATE -O3 -ffast-math)
+target_compile_options(FSWindow PRIVATE -O3 -ffast-math -Wall)
 target_include_directories(FSWindow PUBLIC include)
 
 if(UNIX AND NOT APPLE)
