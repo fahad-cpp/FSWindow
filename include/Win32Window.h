@@ -19,6 +19,13 @@ public:
   Win32Window(const char *name = "NULL", uint32_t width = 720,
               uint32_t height = 720);
   ~Win32Window();
+
+  //Delete copying
+  Win32Window(const Win32Window&) = delete;
+  Win32Window& operator=(const Win32Window&) = delete;
+  Win32Window(const Win32Window&&) = delete;
+  Win32Window& operator=(const Win32Window&&) = delete;
+
   void swapBuffers() override;
   void processMessages() override;
   void addConsole() const override;

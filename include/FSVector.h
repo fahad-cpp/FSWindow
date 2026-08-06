@@ -5,11 +5,7 @@ struct Vector {
     float x;
     float y;
     float z;
-    Vector(float x = 0, float y = 0, float z = 0) {
-        Vector::x = x;
-        Vector::y = y;
-        Vector::z = z;
-    }
+    Vector(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
     friend Vector operator+(const Vector, const Vector);
     friend Vector operator+(const Vector, const float);
     friend Vector operator*(const Vector, const Vector);

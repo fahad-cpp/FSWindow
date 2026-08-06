@@ -2,12 +2,8 @@
 #include <algorithm>
 // Colour
 namespace FS {
-Colour::Colour() {
-    R = 0;
-    G = 0;
-    B = 0;
-}
-Colour::Colour(const float R,const float G,const float B) {
+Colour::Colour() : R(0), G(0), B(0) {}
+Colour::Colour(const float R, const float G, const float B) : R(0), G(0), B(0) {
     this->R = uint8_t(std::clamp(R, 0.f, 255.f));
     this->G = uint8_t(std::clamp(G, 0.f, 255.f));
     this->B = uint8_t(std::clamp(B, 0.f, 255.f));
@@ -17,26 +13,25 @@ bool Colour::operator==(const Colour op) const {
     return (this->R == op.R && this->G == op.G && this->B == op.B);
 }
 Colour Colour::operator*(const float num) const {
-    return { this->R * num, this->G * num, this->B * num };
+    return {this->R * num, this->G * num, this->B * num};
 }
 Colour Colour::operator*(const Colour col) const {
-    return { float(this->R * col.R), float(this->G * col.G), float(this->B * col.B) };
+    return {float(this->R * col.R), float(this->G * col.G), float(this->B * col.B)};
 }
 Colour Colour::operator+(const Colour col) const {
-    return { float(this->R + col.R), float(this->G + col.G), float(this->B + col.B) };
+    return {float(this->R + col.R), float(this->G + col.G), float(this->B + col.B)};
 }
 Colour Colour::operator+(const float num) const {
-    return { this->R + num, this->G + num, this->B + num };
+    return {this->R + num, this->G + num, this->B + num};
 }
 Colour Colour::operator-(const Colour col) const {
-    return { float(this->R - col.R), float(this->G - col.G), float(this->B - col.B) };
+    return {float(this->R - col.R), float(this->G - col.G), float(this->B - col.B)};
 }
 Colour operator*(const float num, const Colour color) {
     return {
         color.R * num,
         color.G * num,
-        color.B * num
-    };
+        color.B * num};
 }
 float Colour::luminance() {
     return ((0.2126f * float(R)) + (0.7152f * float(G)) + (0.0722f * float(B)));
@@ -57,12 +52,9 @@ uint32_t rgbtoHex(const Colour RGB) {
 }
 
 // Colourf
-Colourf::Colourf() {
-    R = 0.f;
-    G = 0.f;
-    B = 0.f;
+Colourf::Colourf() : R(0.f), G(0.f), B(0.f) {
 }
-Colourf::Colourf(float R, float G, float B) {
+Colourf::Colourf(float R, float G, float B) : R(0.f), G(0.f), B(0.f) {
     this->R = std::clamp(R, 0.f, 1.f);
     this->G = std::clamp(G, 0.f, 1.f);
     this->B = std::clamp(B, 0.f, 1.f);
@@ -123,14 +115,14 @@ Colourf operator*(const float num, const Colourf col) {
     return color;
 }
 uint32_t rgbtoHex(const Colourf colorf) {
-    uint32_t R = static_cast<uint8_t>(std::clamp(colorf.R,0.f,1.f) * 255.f);
-    uint32_t G = static_cast<uint8_t>(std::clamp(colorf.G,0.f,1.f) * 255.f);
-    uint32_t B = static_cast<uint8_t>(std::clamp(colorf.B,0.f,1.f) * 255.f);
+    uint32_t R = static_cast<uint8_t>(std::clamp(colorf.R, 0.f, 1.f) * 255.f);
+    uint32_t G = static_cast<uint8_t>(std::clamp(colorf.G, 0.f, 1.f) * 255.f);
+    uint32_t B = static_cast<uint8_t>(std::clamp(colorf.B, 0.f, 1.f) * 255.f);
     return uint32_t((R << 16) | (G << 8) | B);
 }
 Colourf hexToRGBf(const uint32_t hex) {
     Colour color = hexToRGB(hex);
-    Colourf colorf = { color.R / 255.f, color.G / 255.f, color.B / 255.f };
+    Colourf colorf = {color.R / 255.f, color.G / 255.f, color.B / 255.f};
     return colorf;
 }
 } // namespace FS

@@ -5,10 +5,7 @@ namespace FS {
 struct Vector2 {
     float x;
     float y;
-    Vector2(float x = 0, float y = 0) {
-        Vector2::x = x;
-        Vector2::y = y;
-    }
+    Vector2(float x = 0, float y = 0) : x(x), y(y) {}
     friend Vector2 operator+(const Vector2, const Vector2);
     friend Vector2 operator+(const Vector2, const float);
     friend Vector2 operator*(const Vector2, const Vector2);
