@@ -12,14 +12,14 @@
 namespace FS {
 class XlibWindow : public BaseWindow {
     private:
-    XWindow mWindowHandle;
-    Display *mDisplay;
-    int mScreen;
-    GC mGc;
+    XWindow mWindowHandle = 0;
+    Display *mDisplay = nullptr;
+    int mScreen = 0;
+    GC mGc = nullptr;
     XImage *mBackImage = nullptr;
-    Cursor defaultCursor;
-    Cursor hiddenCursor;
-    Pixmap emptyPixmap;
+    Cursor defaultCursor = 0;
+    Cursor hiddenCursor = 0;
+    Pixmap emptyPixmap = 0;
 
     inline void setNative(XWindow window) { mWindowHandle = window; }
 
@@ -27,11 +27,17 @@ class XlibWindow : public BaseWindow {
     XlibWindow(const char *name = "NULL", uint32_t width = 720,
                uint32_t height = 720);
     ~XlibWindow();
+
+    XlibWindow(const XlibWindow&) = delete;
+    XlibWindow& operator=(const XlibWindow&) = delete;
+    XlibWindow(const XlibWindow&&) = delete;
+    XlibWindow& operator=(const XlibWindow&&) = delete;
+
     void swapBuffers() override;
     void processMessages() override;
     void addConsole() const override;
     void removeConsole() const override;
-    bool isOpen() const override { return mWindowHandle; }
+    bool isOpen() const override { return static_cast<bool>(mWindowHandle); }
     bool isFocused() const override;
     void showCursor(bool show) override;
     void setWindowPos(int x, int y) override;

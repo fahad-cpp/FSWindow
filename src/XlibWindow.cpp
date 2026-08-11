@@ -1,3 +1,4 @@
+#include <cstdint>
 #ifdef __linux__
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
@@ -5,7 +6,7 @@
 #include <cstring>
 #include <iostream>
 namespace FS {
-XlibWindow::XlibWindow(const char *name, uint32_t width, uint32_t height) {
+XlibWindow::XlibWindow(const char *name [[maybe_unused]], uint32_t width, uint32_t height) {
     mDisplay = XOpenDisplay(NULL);
     mScreen = DefaultScreen(mDisplay);
     XWindow rootWindow = XDefaultRootWindow(mDisplay);
@@ -16,7 +17,7 @@ XlibWindow::XlibWindow(const char *name, uint32_t width, uint32_t height) {
     renderState.width = width;
     renderState.height = height;
 
-    int bufferSize = width * height * sizeof(uint32_t);
+    uint32_t bufferSize = width * height * sizeof(uint32_t);
     if (renderState.screenBuffer)
         free(renderState.screenBuffer);
     renderState.screenBuffer = (uint32_t *)malloc(bufferSize);
@@ -37,14 +38,14 @@ XlibWindow::XlibWindow(const char *name, uint32_t width, uint32_t height) {
 
     mBackImage = XCreateImage(mDisplay,
                               DefaultVisual(mDisplay, mScreen),
-                              DefaultDepth(mDisplay, mScreen),
+                              static_cast<uint32_t>(DefaultDepth(mDisplay, mScreen)),
                               ZPixmap,
                               0,
                               NULL,
                               renderState.width,
                               renderState.height,
                               32,
-                              renderState.width * 4);
+                              static_cast<int>(renderState.width * 4));
     mBackImage->data = (char *)malloc(width * height * sizeof(uint32_t));
     XFlush(mDisplay);
 }
@@ -64,7 +65,8 @@ XlibWindow::~XlibWindow() {
 void XlibWindow::swapBuffers() {
     if (!isOpen())
         return;
-    std::memcpy(mBackImage->data, renderState.screenBuffer, mBackImage->bytes_per_line * mBackImage->height);
+    const std::size_t bytesToCopy = static_cast<std::size_t>(mBackImage->bytes_per_line * mBackImage->height);
+    std::memcpy(mBackImage->data, renderState.screenBuffer, bytesToCopy);
     XPutImage(mDisplay, mWindowHandle, mGc, mBackImage, 0, 0, 0, 0, renderState.width, renderState.height);
 }
 void XlibWindow::processMessages() {
@@ -156,10 +158,10 @@ void XlibWindow::processMessages() {
             }
         } else if (event.type == ConfigureNotify) {
             XConfigureEvent *configureEvent = &event.xconfigure;
-            renderState.width = configureEvent->width;
-            renderState.height = configureEvent->height;
+            renderState.width = static_cast<uint32_t>(configureEvent->width);
+            renderState.height = static_cast<uint32_t>(configureEvent->height);
 
-            int resolution = renderState.width * renderState.height;
+            uint32_t resolution = renderState.width * renderState.height;
             if (renderState.screenBuffer)
                 free(renderState.screenBuffer);
             renderState.screenBuffer = (uint32_t *)malloc(resolution * sizeof(uint32_t));
@@ -171,14 +173,14 @@ void XlibWindow::processMessages() {
             XDestroyImage(mBackImage);
             mBackImage = XCreateImage(mDisplay,
                                       DefaultVisual(mDisplay, mScreen),
-                                      DefaultDepth(mDisplay, mScreen),
+                                      static_cast<uint32_t>DefaultDepth(mDisplay, mScreen),
                                       ZPixmap,
                                       0,
                                       NULL,
                                       renderState.width,
                                       renderState.height,
                                       32,
-                                      renderState.width * 4);
+                                      static_cast<int>(renderState.width * 4));
             mBackImage->data = (char *)malloc(resolution * sizeof(uint32_t));
             XFlush(mDisplay);
         }
@@ -204,7 +206,7 @@ void XlibWindow::setWindowPos(int x, int y) {
 }
 void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
     XWindow rootWindow = XDefaultRootWindow(mDisplay);
-    XWarpPointer(mDisplay, None, rootWindow, 0, 0, 0, 0, x, y);
+    XWarpPointer(mDisplay, None, rootWindow, 0, 0, 0, 0, int(x), int(y));
     XFlush(mDisplay);
 }
 
@@ -239,8 +241,8 @@ Vector2 XlibWindow::getWindowPos() const {
     long left = 0, top = 0;
     left = extents[0];
     top = extents[2];
-    x -= left;
-    y -= top;
+    x -= static_cast<int>(left);
+    y -= static_cast<int>(top);
     XFree(data);
     return {(float)x, (float)(y)};
 }
