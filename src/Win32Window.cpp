@@ -198,7 +198,7 @@ void Win32Window::processMessages() {
 void Win32Window::swapBuffers() {
     if (!isOpen())
         return;
-    StretchDIBits(mDeviceContextHandle, 0, int(renderState.height) - 1, int(renderState.width), int(-renderState.height), 0, 0, int(renderState.width), int(renderState.height), renderState.screenBuffer, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
+    StretchDIBits(mDeviceContextHandle, 0, int(renderState.height) - 1, int(renderState.width), -int(renderState.height), 0, 0, int(renderState.width), int(renderState.height), renderState.screenBuffer, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
 }
 
 void Win32Window::addConsole() const {
