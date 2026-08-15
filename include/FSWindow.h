@@ -1,7 +1,12 @@
 #ifndef FSWINDOW_H
 #define FSWINDOW_H
+
+//---[DO NOT REMOVE INCLUDES]---
+#include "FSColour.h"
 #include "FSInput.h"
+#include "FSVector.h"
 #include "FSVector2.h"
+//------------------------------
 #include <memory>
 #include <stdint.h>
 
