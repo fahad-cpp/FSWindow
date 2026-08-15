@@ -1,4 +1,3 @@
-#include <cstdint>
 #ifdef __linux__
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
@@ -232,10 +231,10 @@ Vector2 XlibWindow::getWindowPos() const {
     if ((status != Success)) {
         std::cerr << "failed to get window property\n";
         std::cerr << "status:" << status << "\n";
-        return {(float)x, (float)y};
+        return {static_cast<float>(x), static_cast<float>(y)};
     }
     if (nitems != 4) {
-        return {(float)x, (float)y};
+        return {static_cast<float>(x), static_cast<float>(y)};
     }
     long *extents = (long *)data;
     long left = 0, top = 0;
@@ -244,7 +243,7 @@ Vector2 XlibWindow::getWindowPos() const {
     x -= static_cast<int>(left);
     y -= static_cast<int>(top);
     XFree(data);
-    return {(float)x, (float)(y)};
+    return {static_cast<float>(x), static_cast<float>(y)};
 }
 Vector2 XlibWindow::getCursorPos() const {
     if (!isOpen())
@@ -256,7 +255,7 @@ Vector2 XlibWindow::getCursorPos() const {
     uint32_t mask;
     XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
-    return {(float)x, (float)y};
+    return {static_cast<float>(x), static_cast<float>(y)};
 }
 
 void XlibWindow::removeConsole() const {

@@ -222,7 +222,7 @@ void Win32Window::setWindowPos(int x, int y) {
     SetWindowPos(mWindowHandle, NULL, x, y, int(renderState.width), int(renderState.height), 0);
 }
 void Win32Window::setCursorPos(uint32_t x, uint32_t y) {
-    SetCursorPos(int(x), int(y));
+    SetCursorPos(static_cast<int>(x), static_cast<int>(y));
 }
 void Win32Window::focus() const {
     ShowWindow(mWindowHandle, SW_SHOW);
@@ -233,12 +233,12 @@ void Win32Window::focus() const {
 Vector2 Win32Window::getWindowPos() const {
     RECT windowRect;
     GetWindowRect(mWindowHandle, &windowRect);
-    return {(float)windowRect.left, (float)windowRect.top};
+    return {static_cast<float>(windowRect.left), static_cast<float>(windowRect.top)};
 }
 Vector2 FS::Win32Window::getCursorPos() const {
     POINT cursorPos;
     GetCursorPos(&cursorPos);
-    return {(float)cursorPos.x, (float)cursorPos.y};
+    return {static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y)};
 }
 
 void Win32Window::close() {
