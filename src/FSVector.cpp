@@ -28,6 +28,12 @@ Vector operator-(const Vector vec1, const float vec) {
 Vector operator-(const Vector vec1) {
     return { (-vec1.x), (-vec1.y), (-vec1.z) };
 }
+bool operator<(const Vector vec1, const Vector vec2){
+    return (length(vec1) < length(vec2));
+}
+bool operator>(const Vector vec1, const Vector vec2){
+    return (length(vec1) > length(vec2));
+}
 bool operator==(const Vector vec1, const Vector vec) {
     return ((vec1.x == vec.x) && (vec1.y == vec.y) && (vec1.z == vec.z));
 }

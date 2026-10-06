@@ -15,6 +15,8 @@ struct Vector {
     friend Vector operator-(const Vector, const Vector);
     friend Vector operator-(const Vector, const float);
     friend Vector operator-(const Vector);
+    friend bool operator<(const Vector, const Vector);
+    friend bool operator>(const Vector, const Vector);
     friend bool operator==(const Vector, const Vector);
     friend bool operator!=(const Vector vec, const Vector);
     friend Vector operator*(const float, const Vector);
