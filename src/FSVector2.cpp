@@ -46,4 +46,7 @@ float dot(const Vector2 vec1, const Vector2 vec2) {
 float length(const Vector2 vec) {
     return std::sqrt((vec.x * vec.x) + (vec.y * vec.y));
 }
+Vector2 normalize(const Vector2 vec){
+    return vec / length(vec);
+}
 } // namespace FS

@@ -21,6 +21,7 @@ struct Vector2 {
     friend Vector2 operator/(const float, const Vector2);
     friend float dot(const Vector2, const Vector2);
     friend float length(const Vector2);
+    friend Vector2 normalize(const Vector2);
 };
 } // namespace FS
 #endif
