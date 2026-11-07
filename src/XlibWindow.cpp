@@ -247,7 +247,7 @@ Vector2 XlibWindow::getWindowPos(bool excludeFrames) const {
     XFree(data);
     return {static_cast<float>(x), static_cast<float>(y)};
 }
-Vector2 XlibWindow::getCursorPos() const {
+Vector2 XlibWindow::getCursorPos(bool clientSpace) const {
     if (!isOpen())
         return {-1, -1};
     XWindow root, child;
@@ -257,6 +257,9 @@ Vector2 XlibWindow::getCursorPos() const {
     uint32_t mask;
     XQueryPointer(mDisplay, mWindowHandle, &root, &child, &x, &y, &wx, &wy, &mask);
 
+    if (clientSpace) {
+        return {static_cast<float>(wx), static_cast<float>(wy)};
+    }
     return {static_cast<float>(x), static_cast<float>(y)};
 }
 

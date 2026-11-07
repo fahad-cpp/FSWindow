@@ -39,7 +39,7 @@ class BaseWindow {
     virtual void setCursorPos(uint32_t x, uint32_t y) = 0;
     virtual void focus() const = 0;
     virtual Vector2 getWindowPos(bool excludeFrames = false) const = 0;
-    virtual Vector2 getCursorPos() const = 0;
+    virtual Vector2 getCursorPos(bool clientSpace = false) const = 0;
     virtual void close() = 0;
     virtual inline RenderState &getRenderState() { return renderState; }
     virtual inline Input &getInput() { return input; }
@@ -63,7 +63,7 @@ class Window {
     inline void setCursorPos(uint32_t x, uint32_t y) { impl->setCursorPos(x, y); }
     inline void focus() { impl->focus(); }
     inline Vector2 getWindowPos(bool excludeFrames = false) const { return impl->getWindowPos(excludeFrames); }
-    inline Vector2 getCursorPos() const { return impl->getCursorPos(); }
+    inline Vector2 getCursorPos(bool clientSpace = false) const { return impl->getCursorPos(clientSpace); }
     inline void close() { return impl->close(); };
     inline RenderState &getRenderState() { return impl->getRenderState(); };
     inline Input &getInput() { return impl->getInput(); }

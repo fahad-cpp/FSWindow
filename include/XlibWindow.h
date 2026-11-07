@@ -28,10 +28,10 @@ class XlibWindow : public BaseWindow {
                uint32_t height = 720);
     ~XlibWindow();
 
-    XlibWindow(const XlibWindow&) = delete;
-    XlibWindow& operator=(const XlibWindow&) = delete;
-    XlibWindow(const XlibWindow&&) = delete;
-    XlibWindow& operator=(const XlibWindow&&) = delete;
+    XlibWindow(const XlibWindow &) = delete;
+    XlibWindow &operator=(const XlibWindow &) = delete;
+    XlibWindow(const XlibWindow &&) = delete;
+    XlibWindow &operator=(const XlibWindow &&) = delete;
 
     void swapBuffers() override;
     void processMessages() override;
@@ -43,8 +43,8 @@ class XlibWindow : public BaseWindow {
     void setWindowPos(int x, int y) override;
     void setCursorPos(uint32_t x, uint32_t y) override;
     void focus() const override;
-    Vector2 getWindowPos() const override;
-    Vector2 getCursorPos() const override;
+    Vector2 getWindowPos(bool excludeFrames = false) const override;
+    Vector2 getCursorPos(bool clientSpace = false) const override;
     void close() override {
         if (isOpen()) {
             XDestroyWindow(mDisplay, mWindowHandle);

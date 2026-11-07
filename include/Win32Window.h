@@ -37,7 +37,7 @@ public:
   void setCursorPos(uint32_t x, uint32_t y) override;
   void focus() const override;
   Vector2 getWindowPos(bool excludeFrames = false) const override;
-  Vector2 getCursorPos() const override;
+  Vector2 getCursorPos(bool clientSpace = false) const override;
   void close() override;
   inline HWND getNative() const { return mWindowHandle; }
 };
