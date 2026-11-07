@@ -230,9 +230,13 @@ void Win32Window::focus() const {
     SetForegroundWindow(mWindowHandle);
     SetFocus(mWindowHandle);
 }
-Vector2 Win32Window::getWindowPos() const {
+Vector2 Win32Window::getWindowPos(bool excludeFrames) const {
     RECT windowRect;
-    GetWindowRect(mWindowHandle, &windowRect);
+    if(excludeFrames){
+        GetClientRect(mWindowHandle, &windowRect);
+    }else{
+        GetWindowRect(mWindowHandle, &windowRect);
+    }
     return {static_cast<float>(windowRect.left), static_cast<float>(windowRect.top)};
 }
 Vector2 FS::Win32Window::getCursorPos() const {

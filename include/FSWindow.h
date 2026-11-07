@@ -27,7 +27,7 @@ class BaseWindow {
     public:
     RenderState renderState = {};
     Input input = {};
-    virtual ~BaseWindow(){}
+    virtual ~BaseWindow() {}
     virtual void swapBuffers() = 0;
     virtual void processMessages() = 0;
     virtual void addConsole() const = 0;
@@ -38,7 +38,7 @@ class BaseWindow {
     virtual void setWindowPos(int x, int y) = 0;
     virtual void setCursorPos(uint32_t x, uint32_t y) = 0;
     virtual void focus() const = 0;
-    virtual Vector2 getWindowPos() const = 0;
+    virtual Vector2 getWindowPos(bool excludeFrames = false) const = 0;
     virtual Vector2 getCursorPos() const = 0;
     virtual void close() = 0;
     virtual inline RenderState &getRenderState() { return renderState; }
@@ -49,7 +49,7 @@ class Window {
     private:
     std::unique_ptr<BaseWindow> impl;
 
-    public: 
+    public:
     Window(const char *name = "NULL", uint32_t width = 720, uint32_t height = 720);
     ~Window();
     inline void swapBuffers() { impl->swapBuffers(); }
@@ -62,7 +62,7 @@ class Window {
     inline void setWindowPos(int x, int y) { impl->setWindowPos(x, y); }
     inline void setCursorPos(uint32_t x, uint32_t y) { impl->setCursorPos(x, y); }
     inline void focus() { impl->focus(); }
-    inline Vector2 getWindowPos() const { return impl->getWindowPos(); }
+    inline Vector2 getWindowPos(bool excludeFrames = false) const { return impl->getWindowPos(excludeFrames); }
     inline Vector2 getCursorPos() const { return impl->getCursorPos(); }
     inline void close() { return impl->close(); };
     inline RenderState &getRenderState() { return impl->getRenderState(); };

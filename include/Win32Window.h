@@ -36,7 +36,7 @@ public:
   void setWindowPos(int x, int y) override;
   void setCursorPos(uint32_t x, uint32_t y) override;
   void focus() const override;
-  Vector2 getWindowPos() const override;
+  Vector2 getWindowPos(bool excludeFrames = false) const override;
   Vector2 getCursorPos() const override;
   void close() override;
   inline HWND getNative() const { return mWindowHandle; }

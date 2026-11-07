@@ -172,7 +172,7 @@ void XlibWindow::processMessages() {
             XDestroyImage(mBackImage);
             mBackImage = XCreateImage(mDisplay,
                                       DefaultVisual(mDisplay, mScreen),
-                                      static_cast<uint32_t>DefaultDepth(mDisplay, mScreen),
+                                      static_cast<uint32_t> DefaultDepth(mDisplay, mScreen),
                                       ZPixmap,
                                       0,
                                       NULL,
@@ -213,7 +213,7 @@ void XlibWindow::focus() const {
     XSetInputFocus(mDisplay, mWindowHandle, RevertToNone, CurrentTime);
 }
 
-Vector2 XlibWindow::getWindowPos() const {
+Vector2 XlibWindow::getWindowPos(bool excludeFrames) const {
     if (!isOpen())
         return {-1, -1};
     XWindow rootWindow = XRootWindow(mDisplay, mScreen);
@@ -240,8 +240,10 @@ Vector2 XlibWindow::getWindowPos() const {
     long left = 0, top = 0;
     left = extents[0];
     top = extents[2];
-    x -= static_cast<int>(left);
-    y -= static_cast<int>(top);
+    if (!excludeFrames) {
+        x -= static_cast<int>(left);
+        y -= static_cast<int>(top);
+    }
     XFree(data);
     return {static_cast<float>(x), static_cast<float>(y)};
 }
