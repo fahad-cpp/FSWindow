@@ -12,9 +12,11 @@
 
 #ifdef _WIN32
 #include <windows.h>
+typedef HWND NativeWindow;
 #elif __linux__
 #include <X11/Xlib.h>
 typedef Window XWindow;
+typedef Window NativeWindow;
 #endif
 namespace FS {
 struct RenderState {
@@ -67,11 +69,7 @@ class Window {
     inline void close() { return impl->close(); };
     inline RenderState &getRenderState() { return impl->getRenderState(); };
     inline Input &getInput() { return impl->getInput(); }
-#ifdef _WIN32
-    HWND getNative();
-#elif __linux__
-    XWindow getNative();
-#endif
+    NativeWindow getNative();
 };
 }; // namespace FS
 
