@@ -2,21 +2,21 @@
 #define FSWINDOW_H
 
 //---[DO NOT REMOVE INCLUDES]---
-#include "FSColour.h"
-#include "FSInput.h"
-#include "FSVector.h"
-#include "FSVector2.h"
+#include "FSColour.h"  // IWYU pragma: keep
+#include "FSInput.h"   // IWYU pragma: keep
+#include "FSVector.h"  // IWYU pragma: keep
+#include "FSVector2.h" // IWYU pragma: keep
 //------------------------------
 #include <memory>
 #include <stdint.h>
 
 #ifdef _WIN32
 #include <windows.h>
-typedef HWND NativeWindow;
+typedef HWND FSNativeWindow;
 #elif __linux__
 #include <X11/Xlib.h>
 typedef Window XWindow;
-typedef Window NativeWindow;
+typedef XWindow FSNativeWindow;
 #endif
 namespace FS {
 struct RenderState {
@@ -69,7 +69,7 @@ class Window {
     inline void close() { return impl->close(); };
     inline RenderState &getRenderState() { return impl->getRenderState(); };
     inline Input &getInput() { return impl->getInput(); }
-    NativeWindow getNative();
+    FSNativeWindow getNative();
 };
 }; // namespace FS
 
