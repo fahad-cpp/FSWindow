@@ -1,6 +1,9 @@
 #ifndef FSINPUT_H
 #define FSINPUT_H
 namespace FS {
+//TODO(fahad-cpp) : Add NUMPAD and Numbers
+//TODO(fahad-cpp) : replace CTRL and SHIFT with LCTRL/RCTRL and LSHIFT/RSHIFT
+//TODO(fahad-cpp) : differentiate between capital and small letters 
 enum Buttons {
     BUTTON_SHIFT,
     BUTTON_CTRL,
@@ -45,6 +48,7 @@ struct ButtonState {
     bool isDown;
     bool changed;
 };
+// TODO(fahad-cpp) : Add mousediff and mousepos directly here and update in processMessages()
 struct Input {
     ButtonState buttons[BUTTON_COUNT];
 };
