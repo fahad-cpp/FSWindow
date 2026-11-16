@@ -43,4 +43,6 @@ public:
 };
 }; // namespace FS
 #endif
+#else
+#error you are using win32 file on non-windows platform
 #endif

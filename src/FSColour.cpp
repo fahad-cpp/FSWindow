@@ -31,10 +31,15 @@ Colour operator*(const float num, const Colour color) {
     return {
         color.R * num,
         color.G * num,
-        color.B * num};
+        color.B * num,
+    };
 }
-float Colour::luminance() {
-    return ((0.2126f * float(R)) + (0.7152f * float(G)) + (0.0722f * float(B)));
+float Colour::luminance() const {
+    return (
+        (0.2126f * static_cast<float>(R / 255.f)) + 
+        (0.7152f * static_cast<float>(G / 255.f)) + 
+        (0.0722f * static_cast<float>(B / 255.f))
+    );
 }
 
 uint32_t getHex(const Colour RGB) {
@@ -114,6 +119,14 @@ Colourf operator*(const float num, const Colourf col) {
     color.B = col.B * num;
     return color;
 }
+float Colourf::luminance() const {
+    return (
+        (0.2126f * R) + 
+        (0.7152f * G) + 
+        (0.0722f * B)
+    );
+}
+
 uint32_t rgbtoHex(const Colourf colorf) {
     uint32_t R = static_cast<uint8_t>(std::clamp(colorf.R, 0.f, 1.f) * 255.f);
     uint32_t G = static_cast<uint8_t>(std::clamp(colorf.G, 0.f, 1.f) * 255.f);

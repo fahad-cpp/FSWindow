@@ -15,7 +15,7 @@ struct Colour {
     Colour operator+(const float num) const;
     Colour operator-(const Colour col) const;
     friend Colour operator*(const float num, const Colour color);
-    float luminance();
+    float luminance() const;
 };
 Colour hexToRGB(uint32_t hex);
 uint32_t rgbtoHex(const Colour RGB);
@@ -32,6 +32,7 @@ struct Colourf {
     Colourf operator-(const Colourf col) const;
     Colourf operator/(const float num) const;
     friend Colourf operator*(const float num, const Colourf col);
+    float luminance() const;
 };
 Colourf hexToRGBf(uint32_t hex);
 uint32_t rgbtoHex(const Colourf RGB);

@@ -55,4 +55,6 @@ class XlibWindow : public BaseWindow {
 };
 } // namespace FS
 #endif
+#else
+#error you are using x11 file on non-x11 platform
 #endif
