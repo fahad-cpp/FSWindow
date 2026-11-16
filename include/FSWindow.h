@@ -1,5 +1,6 @@
 #ifndef FSWINDOW_H
 #define FSWINDOW_H
+// TODO(fahad-cpp) : Have something like FS_USE_VULKAN macro that user defines to get vulkan specific functions like getVulkanSurface
 
 //---[DO NOT REMOVE INCLUDES]---
 #include "FSColour.h"  // IWYU pragma: keep
@@ -25,6 +26,7 @@ struct RenderState {
     void *screenBuffer;
     float *depthBuffer;
 };
+// TODO(fahad-cpp) : write a good lockMouse() implementation , rn it's weird with x11
 class BaseWindow {
     public:
     RenderState renderState = {};

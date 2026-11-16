@@ -1,9 +1,9 @@
 #ifndef FSINPUT_H
 #define FSINPUT_H
 namespace FS {
-//TODO(fahad-cpp) : Add NUMPAD and Numbers
-//TODO(fahad-cpp) : replace CTRL and SHIFT with LCTRL/RCTRL and LSHIFT/RSHIFT
-//TODO(fahad-cpp) : differentiate between capital and small letters 
+// TODO(fahad-cpp) : Add NUMPAD and Numbers
+// TODO(fahad-cpp) : replace CTRL and SHIFT with LCTRL/RCTRL and LSHIFT/RSHIFT
+// TODO(fahad-cpp) : differentiate between capital and small letters
 enum Buttons {
     BUTTON_SHIFT,
     BUTTON_CTRL,
@@ -53,5 +53,6 @@ struct Input {
     ButtonState buttons[BUTTON_COUNT];
 };
 } // namespace FS
+// TODO(fahad-cpp) : why did i hardcode this again?
 #define isDown(x) input.buttons[x].isDown
 #endif
