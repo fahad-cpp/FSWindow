@@ -86,6 +86,7 @@ void XlibWindow::processMessages() {
             bool isDown = (event.type == KeyPress);
             KeySym keyCode = XLookupKeysym(&event.xkey, 0);
             switch (keyCode) {
+                // Alphabets
                 process_message(BUTTON_A, XK_a);
                 process_message(BUTTON_A, XK_A);
                 process_message(BUTTON_B, XK_b);
@@ -138,6 +139,7 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_Y, XK_Y);
                 process_message(BUTTON_Z, XK_z);
                 process_message(BUTTON_Z, XK_Z);
+                // Action keys
                 process_message(BUTTON_LEFT, XK_Left);
                 process_message(BUTTON_RIGHT, XK_Right);
                 process_message(BUTTON_UP, XK_Up);
@@ -148,6 +150,18 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_CTRL, XK_Control_L);
                 process_message(BUTTON_CTRL, XK_Control_R);
                 process_message(BUTTON_SPACE, XK_space);
+                // Numbers
+                process_message(BUTTON_NUMLOCK,XK_Num_Lock);
+                process_message(BUTTON_0, XK_0);
+                process_message(BUTTON_1, XK_1);
+                process_message(BUTTON_2, XK_2);
+                process_message(BUTTON_3, XK_3);
+                process_message(BUTTON_4, XK_4);
+                process_message(BUTTON_5, XK_5);
+                process_message(BUTTON_6, XK_6);
+                process_message(BUTTON_7, XK_7);
+                process_message(BUTTON_8, XK_8);
+                process_message(BUTTON_9, XK_9);
             }
         } else if (event.type == ButtonPress || event.type == ButtonRelease) {
             bool isDown = event.type == ButtonPress;
