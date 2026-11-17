@@ -169,16 +169,16 @@ void Win32Window::processMessages() {
                 process_messages(BUTTON_Z, 'Z');
                 // Numbers
                 process_messages(BUTTON_NUMLOCK, VK_NUMLOCK);
-                process_messages(BUTTON_0, 0);
-                process_messages(BUTTON_1, 1);
-                process_messages(BUTTON_2, 2);
-                process_messages(BUTTON_3, 3);
-                process_messages(BUTTON_4, 4);
-                process_messages(BUTTON_5, 5);
-                process_messages(BUTTON_6, 6);
-                process_messages(BUTTON_7, 7);
-                process_messages(BUTTON_8, 8);
-                process_messages(BUTTON_9, 9);
+                process_messages(BUTTON_0, '0');
+                process_messages(BUTTON_1, '1');
+                process_messages(BUTTON_2, '2');
+                process_messages(BUTTON_3, '3');
+                process_messages(BUTTON_4, '4');
+                process_messages(BUTTON_5, '5');
+                process_messages(BUTTON_6, '6');
+                process_messages(BUTTON_7, '7');
+                process_messages(BUTTON_8, '8');
+                process_messages(BUTTON_9, '9');
             }
         } break;
         case WM_LBUTTONDOWN: {
