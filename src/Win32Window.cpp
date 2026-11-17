@@ -8,7 +8,7 @@
 
 namespace FS {
 LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
-Win32Window::Win32Window(const char *name, unsigned int width, unsigned int height) : mWindowHandle(nullptr), mDeviceContextHandle(nullptr),bitmapInfo() {
+Win32Window::Win32Window(const char *name, unsigned int width, unsigned int height) : mWindowHandle(nullptr), mDeviceContextHandle(nullptr), bitmapInfo() {
     input = {};
     WNDCLASSA mWindowClass = {};
     mWindowClass.lpfnWndProc = windowProcedure;
@@ -131,6 +131,7 @@ void Win32Window::processMessages() {
         input.buttons[b].isDown = isDown;                               \
     } break
             switch (vk_code) {
+                // Action
                 process_messages(BUTTON_UP, VK_UP);
                 process_messages(BUTTON_DOWN, VK_DOWN);
                 process_messages(BUTTON_LEFT, VK_LEFT);
@@ -139,6 +140,7 @@ void Win32Window::processMessages() {
                 process_messages(BUTTON_ESC, VK_ESCAPE);
                 process_messages(BUTTON_SHIFT, VK_SHIFT);
                 process_messages(BUTTON_CTRL, VK_CONTROL);
+                // Alphabets
                 process_messages(BUTTON_A, 'A');
                 process_messages(BUTTON_B, 'B');
                 process_messages(BUTTON_C, 'C');
@@ -165,6 +167,18 @@ void Win32Window::processMessages() {
                 process_messages(BUTTON_X, 'X');
                 process_messages(BUTTON_Y, 'Y');
                 process_messages(BUTTON_Z, 'Z');
+                // Numbers
+                process_messages(BUTTON_NUMLOCK, VK_NUMLOCK);
+                process_messages(BUTTON_0, 0);
+                process_messages(BUTTON_1, 1);
+                process_messages(BUTTON_2, 2);
+                process_messages(BUTTON_3, 3);
+                process_messages(BUTTON_4, 4);
+                process_messages(BUTTON_5, 5);
+                process_messages(BUTTON_6, 6);
+                process_messages(BUTTON_7, 7);
+                process_messages(BUTTON_8, 8);
+                process_messages(BUTTON_9, 9);
             }
         } break;
         case WM_LBUTTONDOWN: {
@@ -232,9 +246,9 @@ void Win32Window::focus() const {
 }
 Vector2 Win32Window::getWindowPos(bool excludeFrames) const {
     RECT windowRect{};
-    if(excludeFrames){
+    if (excludeFrames) {
         GetClientRect(mWindowHandle, &windowRect);
-    }else{
+    } else {
         GetWindowRect(mWindowHandle, &windowRect);
     }
     return {static_cast<float>(windowRect.left), static_cast<float>(windowRect.top)};
@@ -242,7 +256,7 @@ Vector2 Win32Window::getWindowPos(bool excludeFrames) const {
 Vector2 FS::Win32Window::getCursorPos(bool clientSpace) const {
     POINT cursorPos{};
     GetCursorPos(&cursorPos);
-    if(clientSpace){
+    if (clientSpace) {
         ScreenToClient(mWindowHandle, &cursorPos);
     }
     return {static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y)};
