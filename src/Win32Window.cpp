@@ -117,6 +117,7 @@ void Win32Window::processMessages() {
     for (int i = 0; i < BUTTON_COUNT; i++) {
         input.buttons[i].changed = false;
     }
+    input.mouse.diff = {0.f,0.f};
     if (!isOpen())
         return;
     MSG message;
