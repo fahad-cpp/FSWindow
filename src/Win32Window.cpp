@@ -5,6 +5,7 @@
 #include "FSInput.h"
 #include <cstdio>
 #include <windows.h>
+#include <windowsx.h>
 
 namespace FS {
 LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -53,7 +54,7 @@ Win32Window::~Win32Window() {
 }
 
 LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
-    LRESULT result = 0;
+    // LRESULT result = 0;
     Win32Window *pWindow = nullptr;
     if ((msg != WM_NCCREATE)) {
         pWindow = reinterpret_cast<Win32Window *>(GetWindowLongPtr(window, GWLP_USERDATA));
@@ -76,7 +77,7 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
             renderStateU.depthBuffer = nullptr;
         }
         DestroyWindow(window);
-        return result;
+        // return result;
     } break;
     case WM_SIZE: {
         RECT rect;
@@ -103,7 +104,7 @@ LRESULT windowProcedure(HWND window, UINT msg, WPARAM wParam, LPARAM lParam) {
         pWindow->bitmapInfo.bmiHeader.biPlanes = 1;
         pWindow->bitmapInfo.bmiHeader.biCompression = BI_RGB;
 
-        return 0;
+        // return 0;
     } break;
     default: {
         return DefWindowProcA(window, msg, wParam, lParam);
@@ -122,7 +123,9 @@ void Win32Window::processMessages() {
     while (PeekMessage(&message, mWindowHandle, 0, 0, PM_REMOVE)) {
         switch (message.message) {
         case WM_KEYUP:
-        case WM_KEYDOWN: {
+        case WM_KEYDOWN:
+        case WM_SYSKEYDOWN:
+        case WM_SYSKEYUP: {
             uint32_t vk_code = (uint32_t)message.wParam;
             bool isDown = ((message.lParam & (1 << 31)) == 0);
 #define process_messages(b, vk)                                         \
@@ -132,14 +135,49 @@ void Win32Window::processMessages() {
     } break
             switch (vk_code) {
                 // Action
+                process_messages(BUTTON_SHIFT, VK_SHIFT);
+                process_messages(BUTTON_LSHIFT, VK_LSHIFT); // FIXME
+                process_messages(BUTTON_RSHIFT, VK_RSHIFT); // FIXME
+                process_messages(BUTTON_CTRL, VK_CONTROL);
+                process_messages(BUTTON_LCTRL, VK_LCONTROL); // FIXME
+                process_messages(BUTTON_RCTRL, VK_RCONTROL); // FIXME
+                process_messages(BUTTON_SPACE, VK_SPACE);
+                process_messages(BUTTON_ESC, VK_ESCAPE);
+                process_messages(BUTTON_ALT, VK_MENU);
+                process_messages(BUTTON_LALT, VK_LMENU); // FIXME
+                process_messages(BUTTON_RALT, VK_RMENU); // FIXME
+                process_messages(BUTTON_TAB, VK_TAB);
+                process_messages(BUTTON_CAPSLOCK, VK_CAPITAL);
+                process_messages(BUTTON_ENTER, VK_RETURN);
+                process_messages(BUTTON_BACKSPACE, VK_BACK);
+                // Arrow
                 process_messages(BUTTON_UP, VK_UP);
                 process_messages(BUTTON_DOWN, VK_DOWN);
                 process_messages(BUTTON_LEFT, VK_LEFT);
                 process_messages(BUTTON_RIGHT, VK_RIGHT);
-                process_messages(BUTTON_SPACE, VK_SPACE);
-                process_messages(BUTTON_ESC, VK_ESCAPE);
-                process_messages(BUTTON_SHIFT, VK_SHIFT);
-                process_messages(BUTTON_CTRL, VK_CONTROL);
+                // Numbers
+                process_messages(BUTTON_NUMLOCK, VK_NUMLOCK);
+                process_messages(BUTTON_0, '0');
+                process_messages(BUTTON_1, '1');
+                process_messages(BUTTON_2, '2');
+                process_messages(BUTTON_3, '3');
+                process_messages(BUTTON_4, '4');
+                process_messages(BUTTON_5, '5');
+                process_messages(BUTTON_6, '6');
+                process_messages(BUTTON_7, '7');
+                process_messages(BUTTON_8, '8');
+                process_messages(BUTTON_9, '9');
+
+                process_messages(BUTTON_NUMPAD_0, VK_NUMPAD0);
+                process_messages(BUTTON_NUMPAD_1, VK_NUMPAD1);
+                process_messages(BUTTON_NUMPAD_2, VK_NUMPAD2);
+                process_messages(BUTTON_NUMPAD_3, VK_NUMPAD3);
+                process_messages(BUTTON_NUMPAD_4, VK_NUMPAD4);
+                process_messages(BUTTON_NUMPAD_5, VK_NUMPAD5);
+                process_messages(BUTTON_NUMPAD_6, VK_NUMPAD6);
+                process_messages(BUTTON_NUMPAD_7, VK_NUMPAD7);
+                process_messages(BUTTON_NUMPAD_8, VK_NUMPAD8);
+                process_messages(BUTTON_NUMPAD_9, VK_NUMPAD9);
                 // Alphabets
                 process_messages(BUTTON_A, 'A');
                 process_messages(BUTTON_B, 'B');
@@ -167,19 +205,30 @@ void Win32Window::processMessages() {
                 process_messages(BUTTON_X, 'X');
                 process_messages(BUTTON_Y, 'Y');
                 process_messages(BUTTON_Z, 'Z');
-                // Numbers
-                process_messages(BUTTON_NUMLOCK, VK_NUMLOCK);
-                process_messages(BUTTON_0, '0');
-                process_messages(BUTTON_1, '1');
-                process_messages(BUTTON_2, '2');
-                process_messages(BUTTON_3, '3');
-                process_messages(BUTTON_4, '4');
-                process_messages(BUTTON_5, '5');
-                process_messages(BUTTON_6, '6');
-                process_messages(BUTTON_7, '7');
-                process_messages(BUTTON_8, '8');
-                process_messages(BUTTON_9, '9');
+                // Function
+                process_messages(BUTTON_F1, VK_F1);
+                process_messages(BUTTON_F2, VK_F2);
+                process_messages(BUTTON_F3, VK_F3);
+                process_messages(BUTTON_F4, VK_F4);
+                process_messages(BUTTON_F5, VK_F5);
+                process_messages(BUTTON_F6, VK_F6);
+                process_messages(BUTTON_F7, VK_F7);
+                process_messages(BUTTON_F8, VK_F8);
+                process_messages(BUTTON_F9, VK_F9);
+                process_messages(BUTTON_F10, VK_F10);
+                process_messages(BUTTON_F11, VK_F11);
+                process_messages(BUTTON_F12, VK_F12);
             }
+        } break;
+        case WM_MOUSEMOVE: {
+            const int newMouseX = GET_X_LPARAM(message.lParam);
+            const int newMouseY = GET_Y_LPARAM(message.lParam);
+            const FS::Vector2 newPos{static_cast<float>(newMouseX), static_cast<float>(newMouseY)};
+            const FS::Vector2 diff = newPos - input.mouse.pos;
+
+            input.mouse.diff = diff;
+            input.mouse.pos = newPos;
+
         } break;
         case WM_LBUTTONDOWN: {
             input.buttons[MOUSE_BUTTON_LEFT].changed = !(input.buttons[MOUSE_BUTTON_LEFT].isDown);
@@ -200,6 +249,14 @@ void Win32Window::processMessages() {
             input.buttons[MOUSE_BUTTON_RIGHT].changed = input.buttons[MOUSE_BUTTON_RIGHT].isDown;
             input.buttons[MOUSE_BUTTON_RIGHT].isDown = false;
 
+        } break;
+        case WM_MBUTTONDOWN: {
+            input.buttons[MOUSE_BUTTON_MIDDLE].changed = !(input.buttons[MOUSE_BUTTON_MIDDLE].isDown);
+            input.buttons[MOUSE_BUTTON_MIDDLE].isDown = true;
+        } break;
+        case WM_MBUTTONUP: {
+            input.buttons[MOUSE_BUTTON_MIDDLE].changed = input.buttons[MOUSE_BUTTON_MIDDLE].isDown;
+            input.buttons[MOUSE_BUTTON_MIDDLE].isDown = false;
         } break;
         default: {
             TranslateMessage(&message);
