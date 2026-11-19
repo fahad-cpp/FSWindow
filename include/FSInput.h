@@ -5,7 +5,7 @@
 #include "FSVector2.h"
 
 namespace FS {
-// TODO(fahad-cpp) : x11 : raw mousediff/mousepos , fix NUMPAD not working 
+// TODO(fahad-cpp) : x11 : fix NUMPAD not working 
 // TODO(fahad-cpp) : win32 : fix left and right buttons, handle extra mouse buttons 
 // TODO(fahad-cpp) : differentiate between capital and small letters
 enum Button : uint8_t {

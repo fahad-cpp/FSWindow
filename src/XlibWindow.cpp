@@ -25,7 +25,7 @@ XlibWindow::XlibWindow(const char *name [[maybe_unused]], uint32_t width, uint32
         free(renderState.depthBuffer);
     renderState.depthBuffer = (float *)malloc(width * height * sizeof(float));
 
-    XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask);
+    XSelectInput(mDisplay, mWindowHandle, KeyPressMask | KeyReleaseMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
 
     XColor dummyColor;
     emptyPixmap = XCreatePixmap(mDisplay, mWindowHandle, 1, 1, 1);
@@ -68,7 +68,7 @@ void XlibWindow::swapBuffers() {
     std::memcpy(mBackImage->data, renderState.screenBuffer, bytesToCopy);
     XPutImage(mDisplay, mWindowHandle, mGc, mBackImage, 0, 0, 0, 0, renderState.width, renderState.height);
 }
-void handleButtonEvent(FS::ButtonState& buttonState,bool isDown){
+void handleButtonEvent(FS::ButtonState &buttonState, bool isDown) {
     buttonState.changed = (isDown != buttonState.isDown);
     buttonState.isDown = isDown;
 }
@@ -81,6 +81,7 @@ void XlibWindow::processMessages() {
         input.buttons[b].changed = (isDown != input.buttons[b].isDown); \
         input.buttons[b].isDown = isDown;                               \
     } break
+    input.mouse.diff = {};
     if (!isOpen())
         return;
     while (XPending(mDisplay) > 0) {
@@ -89,13 +90,13 @@ void XlibWindow::processMessages() {
         if (event.type == KeyPress || event.type == KeyRelease) {
             bool isDown = (event.type == KeyPress);
             KeySym keyCode = XLookupKeysym(&event.xkey, 0);
-            if(keyCode == XK_Shift_L || keyCode == XK_Shift_R){
-                handleButtonEvent(input.buttons[BUTTON_LSHIFT], isDown);
+            if (keyCode == XK_Shift_L || keyCode == XK_Shift_R) {
+                handleButtonEvent(input.buttons[BUTTON_SHIFT], isDown);
             }
-            if(keyCode == XK_Control_L || keyCode == XK_Control_R){
+            if (keyCode == XK_Control_L || keyCode == XK_Control_R) {
                 handleButtonEvent(input.buttons[BUTTON_CTRL], isDown);
             }
-            if(keyCode == XK_Alt_L || keyCode == XK_Alt_R){
+            if (keyCode == XK_Alt_L || keyCode == XK_Alt_R) {
                 handleButtonEvent(input.buttons[BUTTON_ALT], isDown);
             }
             switch (keyCode) {
@@ -111,6 +112,7 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_TAB, XK_Tab);
                 process_message(BUTTON_CAPSLOCK, XK_Caps_Lock);
                 process_message(BUTTON_ENTER, XK_Return);
+                process_message(BUTTON_BACKSPACE, XK_BackSpace);
                 // Arrow
                 process_message(BUTTON_UP, XK_Up);
                 process_message(BUTTON_DOWN, XK_Down);
@@ -170,7 +172,7 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_Z, XK_z);
                 process_message(BUTTON_Z, XK_Z);
                 // Numbers
-                process_message(BUTTON_NUMLOCK,XK_Num_Lock);
+                process_message(BUTTON_NUMLOCK, XK_Num_Lock);
                 process_message(BUTTON_0, XK_0);
                 process_message(BUTTON_1, XK_1);
                 process_message(BUTTON_2, XK_2);
@@ -204,7 +206,6 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_F10, XK_F10);
                 process_message(BUTTON_F11, XK_F11);
                 process_message(BUTTON_F12, XK_F12);
-                
             }
         } else if (event.type == ButtonPress || event.type == ButtonRelease) {
             bool isDown = event.type == ButtonPress;
@@ -242,6 +243,10 @@ void XlibWindow::processMessages() {
                                       static_cast<int>(renderState.width * 4));
             mBackImage->data = (char *)malloc(resolution * sizeof(uint32_t));
             XFlush(mDisplay);
+        } else if (event.type == MotionNotify) {
+            FS::Vector2 newPos = {static_cast<float>(event.xmotion.x), static_cast<float>(event.xmotion.y)};
+            input.mouse.diff = newPos - input.mouse.pos;
+            input.mouse.pos = newPos;
         }
     }
 };
