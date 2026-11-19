@@ -68,6 +68,10 @@ void XlibWindow::swapBuffers() {
     std::memcpy(mBackImage->data, renderState.screenBuffer, bytesToCopy);
     XPutImage(mDisplay, mWindowHandle, mGc, mBackImage, 0, 0, 0, 0, renderState.width, renderState.height);
 }
+void handleButtonEvent(FS::ButtonState& buttonState,bool isDown){
+    buttonState.changed = (isDown != buttonState.isDown);
+    buttonState.isDown = isDown;
+}
 void XlibWindow::processMessages() {
     for (int i = 0; i < BUTTON_COUNT; i++) {
         input.buttons[i].changed = false;
@@ -85,7 +89,33 @@ void XlibWindow::processMessages() {
         if (event.type == KeyPress || event.type == KeyRelease) {
             bool isDown = (event.type == KeyPress);
             KeySym keyCode = XLookupKeysym(&event.xkey, 0);
+            if(keyCode == XK_Shift_L || keyCode == XK_Shift_R){
+                handleButtonEvent(input.buttons[BUTTON_LSHIFT], isDown);
+            }
+            if(keyCode == XK_Control_L || keyCode == XK_Control_R){
+                handleButtonEvent(input.buttons[BUTTON_CTRL], isDown);
+            }
+            if(keyCode == XK_Alt_L || keyCode == XK_Alt_R){
+                handleButtonEvent(input.buttons[BUTTON_ALT], isDown);
+            }
             switch (keyCode) {
+                // Action keys
+                process_message(BUTTON_LSHIFT, XK_Shift_L);
+                process_message(BUTTON_RSHIFT, XK_Shift_R);
+                process_message(BUTTON_LCTRL, XK_Control_L);
+                process_message(BUTTON_RCTRL, XK_Control_R);
+                process_message(BUTTON_SPACE, XK_space);
+                process_message(BUTTON_ESC, XK_Escape);
+                process_message(BUTTON_LALT, XK_Alt_L);
+                process_message(BUTTON_RALT, XK_Alt_R);
+                process_message(BUTTON_TAB, XK_Tab);
+                process_message(BUTTON_CAPSLOCK, XK_Caps_Lock);
+                process_message(BUTTON_ENTER, XK_Return);
+                // Arrow
+                process_message(BUTTON_UP, XK_Up);
+                process_message(BUTTON_DOWN, XK_Down);
+                process_message(BUTTON_LEFT, XK_Left);
+                process_message(BUTTON_RIGHT, XK_Right);
                 // Alphabets
                 process_message(BUTTON_A, XK_a);
                 process_message(BUTTON_A, XK_A);
@@ -139,17 +169,6 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_Y, XK_Y);
                 process_message(BUTTON_Z, XK_z);
                 process_message(BUTTON_Z, XK_Z);
-                // Action keys
-                process_message(BUTTON_LEFT, XK_Left);
-                process_message(BUTTON_RIGHT, XK_Right);
-                process_message(BUTTON_UP, XK_Up);
-                process_message(BUTTON_DOWN, XK_Down);
-                process_message(BUTTON_ESC, XK_Escape);
-                process_message(BUTTON_SHIFT, XK_Shift_L);
-                process_message(BUTTON_SHIFT, XK_Shift_R);
-                process_message(BUTTON_CTRL, XK_Control_L);
-                process_message(BUTTON_CTRL, XK_Control_R);
-                process_message(BUTTON_SPACE, XK_space);
                 // Numbers
                 process_message(BUTTON_NUMLOCK,XK_Num_Lock);
                 process_message(BUTTON_0, XK_0);
@@ -162,12 +181,39 @@ void XlibWindow::processMessages() {
                 process_message(BUTTON_7, XK_7);
                 process_message(BUTTON_8, XK_8);
                 process_message(BUTTON_9, XK_9);
+                process_message(BUTTON_NUMPAD_0, XK_KP_0);
+                process_message(BUTTON_NUMPAD_1, XK_KP_1);
+                process_message(BUTTON_NUMPAD_2, XK_KP_2);
+                process_message(BUTTON_NUMPAD_3, XK_KP_3);
+                process_message(BUTTON_NUMPAD_4, XK_KP_4);
+                process_message(BUTTON_NUMPAD_5, XK_KP_5);
+                process_message(BUTTON_NUMPAD_6, XK_KP_6);
+                process_message(BUTTON_NUMPAD_7, XK_KP_7);
+                process_message(BUTTON_NUMPAD_8, XK_KP_8);
+                process_message(BUTTON_NUMPAD_9, XK_KP_9);
+                // function
+                process_message(BUTTON_F1, XK_F1);
+                process_message(BUTTON_F2, XK_F2);
+                process_message(BUTTON_F3, XK_F3);
+                process_message(BUTTON_F4, XK_F4);
+                process_message(BUTTON_F5, XK_F5);
+                process_message(BUTTON_F6, XK_F6);
+                process_message(BUTTON_F7, XK_F7);
+                process_message(BUTTON_F8, XK_F8);
+                process_message(BUTTON_F9, XK_F9);
+                process_message(BUTTON_F10, XK_F10);
+                process_message(BUTTON_F11, XK_F11);
+                process_message(BUTTON_F12, XK_F12);
+                
             }
         } else if (event.type == ButtonPress || event.type == ButtonRelease) {
             bool isDown = event.type == ButtonPress;
             switch (event.xbutton.button) {
                 process_message(MOUSE_BUTTON_LEFT, Button1);
+                process_message(MOUSE_BUTTON_MIDDLE, Button2);
                 process_message(MOUSE_BUTTON_RIGHT, Button3);
+                process_message(MOUSE_BUTTON_EXTRA1, Button4);
+                process_message(MOUSE_BUTTON_EXTRA2, Button5);
             }
         } else if (event.type == ConfigureNotify) {
             XConfigureEvent *configureEvent = &event.xconfigure;
