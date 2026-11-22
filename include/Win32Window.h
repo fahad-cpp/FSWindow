@@ -12,8 +12,6 @@ private:
   HWND mWindowHandle;
   HDC mDeviceContextHandle;
 
-  inline void setNative(HWND window) { mWindowHandle = window; }
-
 public:
   BITMAPINFO bitmapInfo;
   Win32Window(const char *name = "NULL", uint32_t width = 720,

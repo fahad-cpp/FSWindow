@@ -20,9 +20,7 @@ class XlibWindow : public BaseWindow {
     Cursor defaultCursor = 0;
     Cursor hiddenCursor = 0;
     Pixmap emptyPixmap = 0;
-
-    inline void setNative(XWindow window) { mWindowHandle = window; }
-
+    bool cursorHidden = false;
     public:
     XlibWindow(const char *name = "NULL", uint32_t width = 720,
                uint32_t height = 720);

@@ -2,6 +2,7 @@
 #ifndef XLIBWINDOW
 #define XLIBWINDOW
 #include "XlibWindow.h"
+#include <X11/extensions/Xfixes.h>
 #include <cstring>
 #include <iostream>
 namespace FS {
@@ -255,23 +256,33 @@ void XlibWindow::addConsole() const {
 };
 
 void XlibWindow::showCursor(bool show) {
-    if (show) {
-        XDefineCursor(mDisplay, mWindowHandle, defaultCursor);
-    } else {
-        XDefineCursor(mDisplay, mWindowHandle, hiddenCursor);
+    if ((!cursorHidden && show) || (cursorHidden && !show)) {
+        return;
     }
+    ((show) ? XFixesShowCursor(mDisplay, mWindowHandle) : XFixesHideCursor(mDisplay, mWindowHandle));
+    cursorHidden = !show;
+    XFlush(mDisplay);
 }
 void XlibWindow::setWindowPos(int x, int y) {
-    if (!isOpen())
+    if (!isOpen()) {
         return;
+    }
     XSync(mDisplay, False);
     XMoveWindow(mDisplay, mWindowHandle, x, y);
     XFlush(mDisplay);
 }
 void XlibWindow::setCursorPos(uint32_t x, uint32_t y) {
     XWindow rootWindow = XDefaultRootWindow(mDisplay);
-    XWarpPointer(mDisplay, None, rootWindow, 0, 0, 0, 0, int(x), int(y));
-    XFlush(mDisplay);
+    // x11 on wayland does not allow moving cursor without it being hidden using Xfixes
+    if (!cursorHidden) {
+        XFixesHideCursor(mDisplay, rootWindow);
+        XWarpPointer(mDisplay, None, rootWindow, 0, 0, 0, 0, int(x), int(y));
+        XFixesShowCursor(mDisplay, rootWindow);
+        XFlush(mDisplay);
+    } else {
+        XWarpPointer(mDisplay, None, rootWindow, 0, 0, 0, 0, int(x), int(y));
+        XFlush(mDisplay);
+    }
 }
 
 void XlibWindow::focus() const {
@@ -279,8 +290,9 @@ void XlibWindow::focus() const {
 }
 
 Vector2 XlibWindow::getWindowPos(bool excludeFrames) const {
-    if (!isOpen())
+    if (!isOpen()) {
         return {-1, -1};
+    }
     XWindow rootWindow = XRootWindow(mDisplay, mScreen);
     XWindow child;
     int x, y;
@@ -313,8 +325,9 @@ Vector2 XlibWindow::getWindowPos(bool excludeFrames) const {
     return {static_cast<float>(x), static_cast<float>(y)};
 }
 Vector2 XlibWindow::getCursorPos(bool clientSpace) const {
-    if (!isOpen())
+    if (!isOpen()) {
         return {-1, -1};
+    }
     XWindow root, child;
     root = XDefaultRootWindow(mDisplay);
     int x, y;
